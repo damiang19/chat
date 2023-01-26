@@ -1,10 +1,11 @@
 package com.dagoreca.chat.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.security.Principal;
 
 @Entity
@@ -29,7 +30,7 @@ public class User implements Principal {
     @NotNull
     @Size(min = 4, max = 20)
     @Column(length = 20)
-    private String name;
+    private String firstName;
 
     @NotNull
     @Size(min = 4, max = 20)
@@ -38,8 +39,8 @@ public class User implements Principal {
 
     public User(){}
 
-    public User(String name){
-        this.name = name;
+    public User(String login){
+        this.login = login;
     }
     public Long getId() {
         return id;
@@ -66,11 +67,15 @@ public class User implements Principal {
     }
     @Override
     public String getName() {
-        return name;
+        return login;
     }
 
-    public void setName(String firstName) {
-        this.name = firstName;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -87,7 +92,7 @@ public class User implements Principal {
                 "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';
     }

@@ -5,6 +5,7 @@ import com.dagoreca.chat.utils.security.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -41,10 +42,11 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and()
-                .authorizeHttpRequests()
-                .requestMatchers("/authenticate").permitAll()
-                .requestMatchers("/register").permitAll()
-                .requestMatchers("/websocket/yol/**").permitAll()
+                .authorizeRequests()
+                .antMatchers("/authenticate").permitAll()
+                .antMatchers("/websocket/yol/**").permitAll()
+                .antMatchers("/register").permitAll()
+                .antMatchers("/users/**").permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable();
@@ -66,7 +68,7 @@ public class SecurityConfiguration {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**");
+                .antMatchers("/swagger-ui/**", "/v3/api-docs/**");
 
 
     }

@@ -24,9 +24,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User save(User user){
         logger.info("Creating new user");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
     }
 }
