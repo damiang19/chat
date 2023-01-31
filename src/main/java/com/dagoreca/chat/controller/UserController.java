@@ -4,7 +4,7 @@ import com.dagoreca.chat.domain.User;
 import com.dagoreca.chat.service.UserQueryService;
 import com.dagoreca.chat.service.UserService;
 import com.dagoreca.chat.service.dto.UserCriteria;
-import org.springframework.http.HttpStatus;
+import com.dagoreca.chat.service.dto.UserDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping(value="/users")
-    public ResponseEntity<List<User>> findUsers(@RequestParam UserCriteria userCriteria){
+    public ResponseEntity<List<UserDTO>> findUsers(@RequestParam UserCriteria userCriteria){
         return ResponseEntity.ok(userQueryService.findByCriteria(userCriteria));
     }
 

@@ -7,10 +7,8 @@ public class UserCriteria implements Serializable {
 
     private String nameStartsWith;
 
-
     public UserCriteria(){
     }
-
 
     public String getNameStartsWith() {
         return nameStartsWith;

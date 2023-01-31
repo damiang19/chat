@@ -8,7 +8,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class MessageController {
+public class WebSocketMessageController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
