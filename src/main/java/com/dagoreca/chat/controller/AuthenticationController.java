@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UserJwtController {
+public class AuthenticationController {
 
     private final UserDetailsService userDetailsService;
 
@@ -26,7 +26,7 @@ public class UserJwtController {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    public UserJwtController(UserDetailsService userDetailsService, JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager) {
+    public AuthenticationController(UserDetailsService userDetailsService, JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager) {
         this.userDetailsService = userDetailsService;
     }
 

@@ -1,11 +1,8 @@
 package com.dagoreca.chat.service;
 
-import com.dagoreca.chat.domain.Messages;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageProperties;
+import com.dagoreca.chat.service.dto.MessagesDTO;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.amqp.support.converter.MessageConverter;
 
 @Service
 public class JmsMessagingService {
@@ -16,7 +13,7 @@ public class JmsMessagingService {
     }
 
     public void sendMessage(){
-        Messages content = new Messages();
+        MessagesDTO content = new MessagesDTO();
         content.setContent("fifi");
         rabbitTemplate.convertAndSend("","messages.queue", "content");
     }

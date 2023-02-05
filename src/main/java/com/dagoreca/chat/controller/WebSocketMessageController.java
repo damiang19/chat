@@ -15,7 +15,6 @@ public class WebSocketMessageController {
     @MessageMapping("/hello")
     public void send(SimpMessageHeaderAccessor sha, @Payload String username) {
         String message = "Hello from " + sha.getUser().getName();
-
         simpMessagingTemplate.convertAndSendToUser(username, "/topic/messages", message);
     }
 }

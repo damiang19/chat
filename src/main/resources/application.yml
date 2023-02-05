@@ -16,4 +16,11 @@ spring:
     show-sql : true
     hibernate:
       ddl-auto : create-drop
+  data.mongodb:
+    username: rootuser
+    password: rootpass
+    database: chat_db
+    port: 27017
+    host: localhost
+    authentication-database: admin
 jwt.secret : hahaha

@@ -1,41 +1,34 @@
 package com.dagoreca.chat.domain;
 
+import com.dagoreca.chat.service.dto.FriendInvationsDTO;
+import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.security.Principal;
+import java.util.List;
+import java.util.Objects;
 
-@Entity
-@Table(name = "uzytkownik")
+
+@Document("uzytkownik")
 public class User implements Principal {
 
+    @Transient
+    public static final String SEQUENCE_NAME = "users_sequence";
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Size(min = 5, max = 25)
-    @Column(length = 25, unique = true)
     private String login;
 
-    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Size(min = 8, max = 64)
-    @Column(name = "password_hash", length = 64)
     private String password;
 
-    @NotNull
-    @Size(min = 4, max = 20)
-    @Column(length = 20)
     private String firstName;
 
-    @NotNull
-    @Size(min = 4, max = 20)
-    @Column(length = 20)
     private String lastName;
+
+    private List<User> friends;
+
+    private List<FriendInvationsDTO> friendInvations;
 
     public User(){}
 
@@ -86,6 +79,35 @@ public class User implements Principal {
         this.lastName = lastName;
     }
 
+    public List<User> getFriends() {
+        return friends;
+    }
+
+    public List<FriendInvationsDTO> getFriendInvations() {
+        return friendInvations;
+    }
+
+    public void setFriendInvations(List<FriendInvationsDTO> friendInvations) {
+        this.friendInvations = friendInvations;
+    }
+
+    public void setFriends(List<User> friends) {
+        this.friends = friends;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(login, user.login) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(friends, user.friends);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, password, firstName, lastName, friends);
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -94,8 +116,7 @@ public class User implements Principal {
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", friends=" + friends +
                 '}';
     }
-
-
 }

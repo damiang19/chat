@@ -1,21 +1,23 @@
 package com.dagoreca.chat.service.dto;
 
-
-import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
-public class MessagesDTO implements Serializable {
+
+public class MessagesDTO {
 
     private Long id;
+
     private String content;
 
-    private Long senderId;
-    private String senderLogin;
+    private Instant sendDate;
 
-    private Long recipientId;
-    private String recipientLogin;
+    private Boolean arrived;
 
-    public MessagesDTO() {
+    private String author;
+
+    public MessagesDTO(){
+
     }
 
     public Long getId() {
@@ -34,61 +36,52 @@ public class MessagesDTO implements Serializable {
         this.content = content;
     }
 
-    public String getSenderLogin() {
-        return senderLogin;
+    public Instant getSendDate() {
+        return sendDate;
     }
 
-    public void setSenderLogin(String senderLogin) {
-        this.senderLogin = senderLogin;
+    public void setSendDate(Instant sendDate) {
+        this.sendDate = sendDate;
     }
 
-    public String getRecipientLogin() {
-        return recipientLogin;
+    public Boolean getArrived() {
+        return arrived;
     }
 
-    public void setRecipientLogin(String recipientLogin) {
-        this.recipientLogin = recipientLogin;
+    public void setArrived(Boolean arrived) {
+        this.arrived = arrived;
     }
 
-    public Long getSenderId() {
-        return senderId;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setSenderId(Long senderId) {
-        this.senderId = senderId;
-    }
-
-    public Long getRecipientId() {
-        return recipientId;
-    }
-
-    public void setRecipientId(Long recipientId) {
-        this.recipientId = recipientId;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MessagesDTO that = (MessagesDTO) o;
-        return id.equals(that.id) && content.equals(that.content) && senderId.equals(that.senderId)
-                && senderLogin.equals(that.senderLogin) && recipientId.equals(that.recipientId) && recipientLogin.equals(that.recipientLogin);
+        MessagesDTO messages = (MessagesDTO) o;
+        return Objects.equals(id, messages.id) && Objects.equals(content, messages.content) && Objects.equals(sendDate, messages.sendDate)
+                && Objects.equals(arrived, messages.arrived) && Objects.equals(author, messages.author);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, senderId, senderLogin, recipientId, recipientLogin);
+        return Objects.hash(id, content, sendDate, arrived, author);
     }
 
     @Override
     public String toString() {
-        return "MessagesDTO{" +
+        return "Messages{" +
                 "id=" + id +
                 ", content='" + content + '\'' +
-                ", senderId=" + senderId +
-                ", senderLogin='" + senderLogin + '\'' +
-                ", recipientId=" + recipientId +
-                ", recipientLogin='" + recipientLogin + '\'' +
+                ", sendDate=" + sendDate +
+                ", arrived=" + arrived +
+                ", author=" + author +
                 '}';
     }
 }

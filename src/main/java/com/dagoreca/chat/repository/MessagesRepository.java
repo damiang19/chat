@@ -1,10 +1,9 @@
 package com.dagoreca.chat.repository;
 
-import com.dagoreca.chat.domain.Messages;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import com.dagoreca.chat.service.dto.MessagesDTO;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MessagesRepository extends JpaRepository<Messages,Long>, JpaSpecificationExecutor<Messages> {
+public interface MessagesRepository extends MongoRepository<MessagesDTO,Long> {
 }
