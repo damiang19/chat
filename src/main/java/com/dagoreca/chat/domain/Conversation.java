@@ -13,9 +13,11 @@ public class Conversation {
     @Id
     private Long id ;
 
-    private List<User> conversationMembers;
+    private List<String> conversationMembers;
 
     private List<MessagesDTO> messages;
+
+    private Boolean isGroupConversation;
 
     public Conversation() {
     }
@@ -28,20 +30,28 @@ public class Conversation {
         this.id = id;
     }
 
-    public List<User> getConversationMembers() {
-        return conversationMembers;
-    }
-
-    public void setConversationMembers(List<User> conversationMembers) {
-        this.conversationMembers = conversationMembers;
-    }
-
     public List<MessagesDTO> getMessages() {
         return messages;
     }
 
     public void setMessages(List<MessagesDTO> messages) {
         this.messages = messages;
+    }
+
+    public List<String> getConversationMembers() {
+        return conversationMembers;
+    }
+
+    public void setConversationMembers(List<String> conversationMembers) {
+        this.conversationMembers = conversationMembers;
+    }
+
+    public Boolean getGroupConversation() {
+        return isGroupConversation;
+    }
+
+    public void setGroupConversation(Boolean groupConversation) {
+        isGroupConversation = groupConversation;
     }
 
     @Override

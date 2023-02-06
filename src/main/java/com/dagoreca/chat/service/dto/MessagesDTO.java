@@ -6,8 +6,6 @@ import java.util.Objects;
 
 public class MessagesDTO {
 
-    private Long id;
-
     private String content;
 
     private Instant sendDate;
@@ -18,14 +16,6 @@ public class MessagesDTO {
 
     public MessagesDTO(){
 
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getContent() {
@@ -65,19 +55,18 @@ public class MessagesDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MessagesDTO messages = (MessagesDTO) o;
-        return Objects.equals(id, messages.id) && Objects.equals(content, messages.content) && Objects.equals(sendDate, messages.sendDate)
+        return Objects.equals(content, messages.content) && Objects.equals(sendDate, messages.sendDate)
                 && Objects.equals(arrived, messages.arrived) && Objects.equals(author, messages.author);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, sendDate, arrived, author);
+        return Objects.hash(content, sendDate, arrived, author);
     }
 
     @Override
     public String toString() {
         return "Messages{" +
-                "id=" + id +
                 ", content='" + content + '\'' +
                 ", sendDate=" + sendDate +
                 ", arrived=" + arrived +
