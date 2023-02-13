@@ -1,7 +1,7 @@
 package com.dagoreca.chat.controller;
 
-import com.dagoreca.chat.service.dto.JwtRequestDTO;
-import com.dagoreca.chat.service.dto.JwtResponseDTO;
+import com.dagoreca.chat.service.dto.jwt.JwtRequestDTO;
+import com.dagoreca.chat.service.dto.jwt.JwtResponseDTO;
 import com.dagoreca.chat.utils.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

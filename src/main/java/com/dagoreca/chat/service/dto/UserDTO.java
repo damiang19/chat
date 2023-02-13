@@ -4,6 +4,7 @@ package com.dagoreca.chat.service.dto;
 import com.dagoreca.chat.domain.User;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,7 +20,9 @@ public class UserDTO implements Serializable {
 
     private String lastName;
 
-    private List<User> friends;
+    private List<String> friends;
+
+    private List<String> friendInvitations;
 
     public UserDTO() {
     }
@@ -64,12 +67,34 @@ public class UserDTO implements Serializable {
         this.lastName = lastName;
     }
 
-    public List<User> getFriends() {
+    public List<String> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<User> friends) {
+    public void setFriends(List<String> friends) {
         this.friends = friends;
+    }
+
+    public List<String> getFriendInvitations() {
+        return friendInvitations;
+    }
+
+    public void addFriendInvitations(String login) {
+        if (friendInvitations == null) {
+            friendInvitations = new ArrayList<>();
+        }
+        friendInvitations.add(login);
+    }
+
+    public void addFriends(String login) {
+        if (friends == null) {
+            friends = new ArrayList<>();
+        }
+        friends.add(login);
+    }
+
+    public void setFriendInvitations(List<String> friendInvitations) {
+        this.friendInvitations = friendInvitations;
     }
 
     @Override
@@ -82,7 +107,7 @@ public class UserDTO implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, firstName, lastName, friends);
+        return Objects.hash(id, login, password, firstName, lastName, friends, friendInvitations);
     }
 
     @Override

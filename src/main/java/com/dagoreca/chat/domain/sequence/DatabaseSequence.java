@@ -1,4 +1,4 @@
-package com.dagoreca.chat.domain;
+package com.dagoreca.chat.domain.sequence;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,7 +10,6 @@ public class DatabaseSequence {
     private String id;
 
     private long seq;
-
 
     public String getId() {
         return id;

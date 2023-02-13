@@ -8,12 +8,12 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class WebSocketMessageController {
+public class ConversationController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/hello")
-    public void send(SimpMessageHeaderAccessor sha, @Payload String username) {
+    public void send(SimpMessageHeaderAccessor sha, @Payload String  username) {
         String message = "Hello from " + sha.getUser().getName();
         simpMessagingTemplate.convertAndSendToUser(username, "/topic/messages", message);
     }

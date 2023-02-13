@@ -1,4 +1,4 @@
-package com.dagoreca.chat.service.dto;
+package com.dagoreca.chat.service.dto.jwt;
 
 public class JwtRequestDTO {
     private String username;

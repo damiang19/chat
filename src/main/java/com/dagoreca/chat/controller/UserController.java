@@ -1,11 +1,17 @@
 package com.dagoreca.chat.controller;
 
+import com.dagoreca.chat.domain.Conversation;
 import com.dagoreca.chat.domain.User;
+import com.dagoreca.chat.service.ConversationService;
 import com.dagoreca.chat.service.UserService;
 import com.dagoreca.chat.service.dto.UserDTO;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -15,19 +21,25 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    private final ConversationService conversationService;
+
+    private final MongoTemplate mongoTemplate;
+
+    public UserController(UserService userService, ConversationService conversationService, MongoTemplate mongoTemplate) {
         this.userService = userService;
+        this.conversationService = conversationService;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @PostMapping(value = "/register")
     public ResponseEntity<User> saveUser(@Valid @RequestBody UserDTO user) {
-        User newUser = userService.save(user);
+        User newUser = userService.createNewUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
     @PutMapping(value = "/update-user")
-    public ResponseEntity<User> updateUser(@Valid @RequestBody UserDTO user) {
-        User newUser = userService.save(user);
+    public ResponseEntity<User> updateAccountDetails(@Valid @RequestBody UserDTO user) {
+        User newUser = userService.createNewUser(user);
         return ResponseEntity.status(HttpStatus.OK).body(newUser);
     }
 
@@ -35,6 +47,7 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> findUsers(){
         return ResponseEntity.ok(userService.findAll());
     }
+
 
     @DeleteMapping(value = "/users/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id){
@@ -46,4 +59,50 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+        @GetMapping(value = "/friends")
+        public ResponseEntity<List<User>> getFriends() {
+            UserDTO currentUser =  userService.getCurrentUser();
+            Query query = new Query();
+            query.addCriteria(Criteria.where("login").in(currentUser.getFriends()));
+            List<User> friends = mongoTemplate.find(query, User.class);
+            return ResponseEntity.ok().body(friends);
+        }
+
+    @GetMapping(value = "/friend/conversation")
+    public ResponseEntity<Conversation> getConversation() {
+        UserDTO currentUser =  userService.getCurrentUser();
+        Query query = new Query();
+        query.addCriteria(Criteria.where("conversationMembers").in("user","admin"));
+        Conversation friends = mongoTemplate.findOne(query, Conversation.class);
+        return ResponseEntity.ok().body(friends);
+    }
+
+
+    @PutMapping(value = "accept-friend-invitation")
+    public ResponseEntity<Void> acceptInvitationToFriendList(@RequestParam String login){
+        UserDTO currentUser =  userService.getCurrentUser();
+        currentUser.getFriendInvitations().stream()
+                .filter(user -> user.startsWith(login)).findFirst()
+                .ifPresent(user -> {
+                    currentUser.addFriends(user);
+                    currentUser.getFriendInvitations().remove(user);
+                    userService.updateUser(currentUser);
+                    conversationService.createConversation(List.of(currentUser.getLogin(),login));
+                });
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "send-friend-invitation")
+    public ResponseEntity<Void> sendInvitationToFriendList(@RequestParam String login){
+        UserDTO userDTO =  userService.getCurrentUser();
+        try{
+            userService.findOne(login).ifPresent(receiver ->{
+               receiver.addFriendInvitations(userDTO.getLogin());
+               userService.updateUser(receiver);
+            });
+            return ResponseEntity.noContent().build();
+        }catch(Exception exception){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
 }

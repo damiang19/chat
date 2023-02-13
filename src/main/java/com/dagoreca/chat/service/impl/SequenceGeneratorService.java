@@ -1,6 +1,6 @@
 package com.dagoreca.chat.service.impl;
 
-import com.dagoreca.chat.domain.DatabaseSequence;
+import com.dagoreca.chat.domain.sequence.DatabaseSequence;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;

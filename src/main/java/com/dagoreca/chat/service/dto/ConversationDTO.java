@@ -1,7 +1,6 @@
 package com.dagoreca.chat.service.dto;
 
 
-import com.dagoreca.chat.domain.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ public class ConversationDTO implements Serializable {
 
     private Long id ;
 
-    private List<User> conversationMembers;
+    private List<String> conversationMembers;
 
     private List<MessagesDTO> messages;
 
@@ -27,11 +26,11 @@ public class ConversationDTO implements Serializable {
         this.id = id;
     }
 
-    public List<User> getConversationMembers() {
+    public List<String> getConversationMembers() {
         return conversationMembers;
     }
 
-    public void setConversationMembers(List<User> conversationMembers) {
+    public void setConversationMembers(List<String> conversationMembers) {
         this.conversationMembers = conversationMembers;
     }
 
@@ -43,7 +42,7 @@ public class ConversationDTO implements Serializable {
         this.messages = messages;
     }
 
-    public void addConversationMembers(User user) {
+    public void addConversationMembers(String user) {
         if (conversationMembers == null) {
             conversationMembers = new ArrayList<>();
         }

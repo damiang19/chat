@@ -1,10 +1,12 @@
 package com.dagoreca.chat.domain;
 
-import com.dagoreca.chat.service.dto.FriendInvationsDTO;
+import com.dagoreca.chat.service.dto.FriendInvitationsDTO;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,9 +16,11 @@ public class User implements Principal {
 
     @Transient
     public static final String SEQUENCE_NAME = "users_sequence";
+
     @Id
     private Long id;
 
+    @Indexed(unique = true)
     private String login;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -26,21 +30,22 @@ public class User implements Principal {
 
     private String lastName;
 
-    private List<User> friends;
+    private List<String> friends;
 
-    private List<FriendInvationsDTO> friendInvations;
+    private List<String> friendInvitations;
 
     public User(){}
 
-    public User(String login){
-        this.login = login;
-    }
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public User(String login){
+        this.login = login;
     }
 
     public String getLogin() {
@@ -79,20 +84,34 @@ public class User implements Principal {
         this.lastName = lastName;
     }
 
-    public List<User> getFriends() {
+    public List<String> getFriends() {
         return friends;
     }
 
-    public List<FriendInvationsDTO> getFriendInvations() {
-        return friendInvations;
-    }
-
-    public void setFriendInvations(List<FriendInvationsDTO> friendInvations) {
-        this.friendInvations = friendInvations;
-    }
-
-    public void setFriends(List<User> friends) {
+    public void setFriends(List<String> friends) {
         this.friends = friends;
+    }
+
+    public List<String> getFriendInvitations() {
+        return friendInvitations;
+    }
+
+    public void setFriendInvitations(List<String> friendInvitations) {
+        this.friendInvitations = friendInvitations;
+    }
+
+    public void addFriendInvitations(String login) {
+        if (friendInvitations == null) {
+            friendInvitations = new ArrayList<>();
+        }
+        friendInvitations.add(login);
+    }
+
+    public void addFriends(String login) {
+        if (friends == null) {
+            friends = new ArrayList<>();
+        }
+        friends.add(login);
     }
 
     @Override
@@ -100,12 +119,12 @@ public class User implements Principal {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(login, user.login) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(friends, user.friends);
+        return Objects.equals(id, user.id) && Objects.equals(login, user.login) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(friends, user.friends) && Objects.equals(friendInvitations, user.friendInvitations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, firstName, lastName, friends);
+        return Objects.hash(id, login, password, firstName, lastName, friends, friendInvitations);
     }
 
     @Override
@@ -117,6 +136,7 @@ public class User implements Principal {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", friends=" + friends +
+                ", friendInvitations=" + friendInvitations +
                 '}';
     }
 }

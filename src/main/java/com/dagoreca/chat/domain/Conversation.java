@@ -4,11 +4,16 @@ import com.dagoreca.chat.service.dto.MessagesDTO;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
+import javax.persistence.Transient;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Document("conversations")
 public class Conversation {
+
+    @Transient
+    public static final String SEQUENCE_NAME = "conversation_sequence";
 
     @Id
     private Long id ;
@@ -52,6 +57,20 @@ public class Conversation {
 
     public void setGroupConversation(Boolean groupConversation) {
         isGroupConversation = groupConversation;
+    }
+
+    public void addConversationMembers(String user) {
+        if (conversationMembers == null) {
+            conversationMembers = new ArrayList<>();
+        }
+        conversationMembers.add(user);
+    }
+
+    public void addMessages(String user) {
+        if (conversationMembers == null) {
+            conversationMembers = new ArrayList<>();
+        }
+        conversationMembers.add(user);
     }
 
     @Override
