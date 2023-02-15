@@ -12,10 +12,18 @@ public class MessagesDTO {
 
     private Boolean arrived;
 
-    private String author;
+    private String receiver;
 
     public MessagesDTO(){
 
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public String getContent() {
@@ -42,35 +50,26 @@ public class MessagesDTO {
         this.arrived = arrived;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MessagesDTO messages = (MessagesDTO) o;
-        return Objects.equals(content, messages.content) && Objects.equals(sendDate, messages.sendDate)
-                && Objects.equals(arrived, messages.arrived) && Objects.equals(author, messages.author);
+        MessagesDTO that = (MessagesDTO) o;
+        return Objects.equals(content, that.content) && Objects.equals(sendDate, that.sendDate) && Objects.equals(arrived, that.arrived) && Objects.equals(receiver, that.receiver);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(content, sendDate, arrived, author);
+        return Objects.hash(content, sendDate, arrived, receiver);
     }
 
     @Override
     public String toString() {
-        return "Messages{" +
-                ", content='" + content + '\'' +
+        return "MessagesDTO{" +
+                "content='" + content + '\'' +
                 ", sendDate=" + sendDate +
                 ", arrived=" + arrived +
-                ", author=" + author +
+                ", receiver='" + receiver + '\'' +
                 '}';
     }
 }

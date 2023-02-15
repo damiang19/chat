@@ -1,5 +1,6 @@
 package com.dagoreca.chat.controller;
 
+import com.dagoreca.chat.service.dto.MessagesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -13,7 +14,7 @@ public class ConversationController {
     private SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/hello")
-    public void send(SimpMessageHeaderAccessor sha, @Payload String  username) {
+    public void send(SimpMessageHeaderAccessor sha, @Payload MessagesDTO username) {
         String message = "Hello from " + sha.getUser().getName();
         simpMessagingTemplate.convertAndSendToUser(username, "/topic/messages", message);
     }
