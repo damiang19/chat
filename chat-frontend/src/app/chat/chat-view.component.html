@@ -1,20 +1,21 @@
-<!-- <p>
-  <input type="text" [(ngModel)]="name">
-  <button (click)="connect()">polacz</button>
-  <button (click)="sendMessage()">siema</button>
-  <input type="text" [(ngModel)]="message">
-  register works!
-</p> -->
+
 <div class="container-fluid">
   <div style=" height: 830px; background-color: rgba(255,0,0,0.1);" class="row">
     <div class="h-100 col-2 bg-secondary d-flex justify-content-center">
       <label>Lista znajomych</label>
-      <div *ngFor="let item of userList">
-        <a (click)="openConversation(item)">{{item.login}}</a>
+      <div *ngFor="let user of userList">
+        <a (click)="openConversation(user.login)">{{user.login}}</a>
       </div>
     </div>
-    <div class="h-100 col-10 bg-light  d-flex justify-content-center" *ngFor="let message of conversation.messages">
-      <p>{{message.content}}</p>
+    <div class="h-100 col-10 bg-light row d-flex justify-content-center">
+      <div  *ngFor="let message of conversation.messages" class="d-flex justify-content-center">  
+        <span>{{message.content}}</span>
+      </div>
     </div>
+  </div>
+  <div class="input-group">
+    <div class="input-group-prepend">
+    </div>
+    <textarea class="form-control" aria-label="With textarea"  (keyup.enter)="sendMessage($event.target.value)"></textarea>
   </div>
 </div>

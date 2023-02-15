@@ -40,7 +40,7 @@ build/
 /bazel-out
 
 # dependencies
-/node_modules
+/chat-frontend/node_modules/
 
 # profiling files
 chrome-profiler-events*.json

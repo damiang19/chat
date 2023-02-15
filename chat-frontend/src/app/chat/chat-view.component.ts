@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CompatClient, Stomp } from '@stomp/stompjs';
 import { WebSocketService } from '../services/WebSocket.service';
 import * as SockJS from 'sockjs-client';
-import jwt_decode from 'jwt-decode'
+import jwt_decode, { JwtDecodeOptions } from 'jwt-decode'
 import { JwtService } from '../services/jwt.service';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user';
 import { Conversation } from '../models/conversation';
+import { MessageRequest } from '../models/message-request';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { Messages } from '../models/messages';
 
 @Component({
   selector: 'chat-view',
@@ -16,18 +19,23 @@ import { Conversation } from '../models/conversation';
 export class ChatViewComponent implements OnInit {
   name : string;
   message : string;
+  currentUser: string;
   stompClient : CompatClient;
   conversation: Conversation;
   userList : User[];
+  messageRequest: MessageRequest;
   
   constructor( private ws : WebSocketService,private jwtService: JwtService,private userService : UserService) { 
     this.name = '';
     this.message = '';
     this.userList = [];
+    this.currentUser = '';
     this.stompClient = null;
     this.conversation = new Conversation();
     this.conversation.messages = [];
+    this.messageRequest = new MessageRequest()
     const key = jwt_decode(localStorage.getItem(JwtService.TOKEN_STORAGE_KEY));
+    this.name = key['sub'];
   }
 
   ngOnInit() {
@@ -38,8 +46,9 @@ export class ChatViewComponent implements OnInit {
     })
   }
 
-  openConversation(conversation: Conversation): void {
-    this.userService.getConversation().subscribe(response =>{
+  openConversation(friendLogin : string): void {
+    this.currentUser = friendLogin;
+    this.userService.getConversation(friendLogin).subscribe(response =>{
       this.conversation = response.body;
     })
   }
@@ -51,7 +60,7 @@ const _this = this;
 this.stompClient.connect({username: this.name}, function (frame) {
   _this.setConnected(true);
   _this.stompClient.subscribe('/users/topic/messages', function (hello) {
-    _this.showGreeting(hello.body);
+    _this.showConversation(hello.body);
   });
 });
 }
@@ -70,12 +79,23 @@ if (connected) {
 }
 
 }
-showGreeting(message : any) {
-this.message = message;
+showConversation(message : any) {
+  debugger;
+  const n = new Messages();
+  n.content = message;
+  this.conversation.messages.push(n);
+  console.log(this.conversation.messages);
 }
 
-sendMessage(){
-  this.stompClient.send("/hello", {},);
+sendMessage(content : string){
+  this.prepareMessageToSend(content);
+  this.stompClient.send("/hello", {}, JSON.stringify(this.messageRequest));
+}
+
+prepareMessageToSend(content : string){
+  this.messageRequest.content = content;
+  this.messageRequest.conversationId = this.conversation.id;
+  this.messageRequest.receiver = this.currentUser;
 }
 
 }

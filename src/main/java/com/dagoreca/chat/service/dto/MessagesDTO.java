@@ -12,18 +12,18 @@ public class MessagesDTO {
 
     private Boolean arrived;
 
-    private String receiver;
+    private String author;
 
     public MessagesDTO(){
 
     }
 
-    public String getReceiver() {
-        return receiver;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getContent() {
@@ -55,12 +55,12 @@ public class MessagesDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MessagesDTO that = (MessagesDTO) o;
-        return Objects.equals(content, that.content) && Objects.equals(sendDate, that.sendDate) && Objects.equals(arrived, that.arrived) && Objects.equals(receiver, that.receiver);
+        return Objects.equals(content, that.content) && Objects.equals(sendDate, that.sendDate) && Objects.equals(arrived, that.arrived) && Objects.equals(author, that.author);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(content, sendDate, arrived, receiver);
+        return Objects.hash(content, sendDate, arrived, author);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class MessagesDTO {
                 "content='" + content + '\'' +
                 ", sendDate=" + sendDate +
                 ", arrived=" + arrived +
-                ", receiver='" + receiver + '\'' +
+                ", author='" + author + '\'' +
                 '}';
     }
 }

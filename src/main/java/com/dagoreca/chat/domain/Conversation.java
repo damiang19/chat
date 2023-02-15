@@ -1,5 +1,6 @@
 package com.dagoreca.chat.domain;
 
+import com.dagoreca.chat.service.dto.ConversationDTO;
 import com.dagoreca.chat.service.dto.MessagesDTO;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -66,11 +67,11 @@ public class Conversation {
         conversationMembers.add(user);
     }
 
-    public void addMessages(String user) {
-        if (conversationMembers == null) {
-            conversationMembers = new ArrayList<>();
+    public void addMessages(MessagesDTO messagesDTO) {
+        if (messages == null) {
+            messages = new ArrayList<>();
         }
-        conversationMembers.add(user);
+        messages.add(messagesDTO);
     }
 
     @Override

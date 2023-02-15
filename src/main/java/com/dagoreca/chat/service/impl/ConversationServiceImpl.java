@@ -6,12 +6,18 @@ import com.dagoreca.chat.domain.User;
 import com.dagoreca.chat.repository.ConversationRepository;
 import com.dagoreca.chat.service.ConversationService;
 import com.dagoreca.chat.service.dto.ConversationDTO;
+import com.dagoreca.chat.service.dto.MessageRequestDTO;
+import com.dagoreca.chat.service.dto.MessagesDTO;
 import com.dagoreca.chat.service.dto.UserDTO;
 import com.dagoreca.chat.service.mapper.ConversationMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -37,6 +43,16 @@ public class ConversationServiceImpl implements ConversationService {
         Conversation conversation = conversationMapper.toEntity(conversationDTO);
         conversationRepository.save(conversation);
         return conversationMapper.toDto(conversation);
+    }
+    @Override
+    public ConversationDTO updateConversation(MessageRequestDTO messageRequestDTO){
+       Conversation actualConversation = conversationRepository.findById(messageRequestDTO.getConversationId()).orElseThrow(RuntimeException::new);
+        MessagesDTO messagesDTO = new MessagesDTO();
+        messagesDTO.setSendDate(Instant.now());
+        messagesDTO.setContent(messageRequestDTO.getContent());
+       actualConversation.addMessages(messagesDTO);
+       conversationRepository.save(actualConversation);
+       return conversationMapper.toDto(actualConversation);
     }
 
 }
