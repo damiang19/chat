@@ -1,21 +1,22 @@
 
-<div class="container-fluid">
-  <div style=" height: 830px; background-color: rgba(255,0,0,0.1);" class="row">
-    <div class="h-100 col-2 bg-secondary d-flex justify-content-center">
-      <label>Lista znajomych</label>
+
+  <div  class="row">
+    <div class="col-2 bg-light" style="height: 750px;">
+      <label >Lista znajomych</label>
       <div *ngFor="let user of userList">
-        <a (click)="openConversation(user.login)">{{user.login}}</a>
+        <button type="button" style="width:100%" (click)="openConversation(user.login)" class="btn btn-secondary btn-block">{{user.login}}</button>
       </div>
     </div>
-    <div class="h-100 col-10 bg-light row d-flex justify-content-center">
-      <div  *ngFor="let message of conversation.messages" class="d-flex justify-content-center">  
-        <span>{{message.content}}</span>
+    <div class="col-10 bg-white row d-flex justify-content-center overflow-auto"  style="height: 750px; max-height: 750px;">
+      <div *ngFor="let message of conversation.messages; index as i" class="d-flex justify-content-center">  
+        <span [style.background-color]="colourConversation(i)">{{message.content}}</span>
       </div>
     </div>
+    <div class="col-2"></div>
+      <div class="col-10">
+        <textarea class="form-control" aria-label="With textarea"  (keyup.enter)="sendMessage($event.target.value)"></textarea>
+      </div>
+  
   </div>
-  <div class="input-group">
-    <div class="input-group-prepend">
-    </div>
-    <textarea class="form-control" aria-label="With textarea"  (keyup.enter)="sendMessage($event.target.value)"></textarea>
-  </div>
-</div>
+  
+

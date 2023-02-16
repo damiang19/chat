@@ -46,6 +46,10 @@ export class ChatViewComponent implements OnInit {
     })
   }
 
+  colourConversation(index : number): string {
+    return index %2 == 0 ? 'white' : 'grey'
+  }
+
   openConversation(friendLogin : string): void {
     this.currentUser = friendLogin;
     this.userService.getConversation(friendLogin).subscribe(response =>{
@@ -80,7 +84,6 @@ if (connected) {
 
 }
 showConversation(message : any) {
-  debugger;
   const n = new Messages();
   n.content = message;
   this.conversation.messages.push(n);
