@@ -16,7 +16,7 @@ export class UserService {
         return this.httpClient.get<User[]>(API_URL+'/friends',{observe:'response'})
     }
       
-    public getConversation(): Observable<HttpResponse<Conversation>> {
-        return this.httpClient.get<Conversation>(API_URL+'/friend/conversation',{observe:'response'})
+    public getConversation(friendLogin: string): Observable<HttpResponse<Conversation>> {
+        return this.httpClient.get<Conversation>(API_URL+'/friend/conversation',{observe:'response', params:{'friendLogin': friendLogin}})
     }
 }

@@ -18,6 +18,14 @@ public class MessagesDTO {
 
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public String getContent() {
         return content;
     }
@@ -42,21 +50,12 @@ public class MessagesDTO {
         this.arrived = arrived;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MessagesDTO messages = (MessagesDTO) o;
-        return Objects.equals(content, messages.content) && Objects.equals(sendDate, messages.sendDate)
-                && Objects.equals(arrived, messages.arrived) && Objects.equals(author, messages.author);
+        MessagesDTO that = (MessagesDTO) o;
+        return Objects.equals(content, that.content) && Objects.equals(sendDate, that.sendDate) && Objects.equals(arrived, that.arrived) && Objects.equals(author, that.author);
     }
 
     @Override
@@ -66,11 +65,11 @@ public class MessagesDTO {
 
     @Override
     public String toString() {
-        return "Messages{" +
-                ", content='" + content + '\'' +
+        return "MessagesDTO{" +
+                "content='" + content + '\'' +
                 ", sendDate=" + sendDate +
                 ", arrived=" + arrived +
-                ", author=" + author +
+                ", author='" + author + '\'' +
                 '}';
     }
 }

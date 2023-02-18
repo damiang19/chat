@@ -1,6 +1,8 @@
 package com.dagoreca.chat.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.dagoreca.chat.repository.ConversationRepository;
+import com.dagoreca.chat.service.ConversationService;
+import com.dagoreca.chat.service.dto.MessageRequestDTO;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -9,12 +11,17 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class ConversationController {
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
+    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final ConversationService conversationService;
+
+    public ConversationController(SimpMessagingTemplate simpMessagingTemplate, ConversationService conversationService) {
+        this.simpMessagingTemplate = simpMessagingTemplate;
+        this.conversationService = conversationService;
+    }
 
     @MessageMapping("/hello")
-    public void send(SimpMessageHeaderAccessor sha, @Payload String  username) {
-        String message = "Hello from " + sha.getUser().getName();
-        simpMessagingTemplate.convertAndSendToUser(username, "/topic/messages", message);
+    public void send(SimpMessageHeaderAccessor sha, @Payload MessageRequestDTO messagesDTO) {
+        conversationService.updateConversation(messagesDTO);
+        simpMessagingTemplate.convertAndSendToUser(messagesDTO.getReceiver(), "/topic/messages", messagesDTO.getContent());
     }
 }

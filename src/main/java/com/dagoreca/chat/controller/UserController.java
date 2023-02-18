@@ -69,10 +69,10 @@ public class UserController {
         }
 
     @GetMapping(value = "/friend/conversation")
-    public ResponseEntity<Conversation> getConversation() {
+    public ResponseEntity<Conversation> getConversation(@RequestParam String friendLogin) {
         UserDTO currentUser =  userService.getCurrentUser();
         Query query = new Query();
-        query.addCriteria(Criteria.where("conversationMembers").in("user","admin"));
+        query.addCriteria(Criteria.where("conversationMembers").in(currentUser,friendLogin));
         Conversation friends = mongoTemplate.findOne(query, Conversation.class);
         return ResponseEntity.ok().body(friends);
     }

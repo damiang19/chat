@@ -1,6 +1,5 @@
 package com.dagoreca.chat.domain;
 
-import com.dagoreca.chat.service.dto.FriendInvitationsDTO;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
