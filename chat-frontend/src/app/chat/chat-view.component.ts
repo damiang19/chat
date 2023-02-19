@@ -39,7 +39,6 @@ export class ChatViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.connect();
     this.userService.getFriends().subscribe(response => {
       console.log(response.body);
       this.userList = response.body;
@@ -54,14 +53,14 @@ export class ChatViewComponent implements OnInit {
     this.currentUser = friendLogin;
     this.userService.getConversation(friendLogin).subscribe(response =>{
       this.conversation = response.body;
-    })
+    },err =>{},() => { this.connect();})
   }
 
 connect() {
 const socket = new SockJS('http://localhost:8080/websocket/yol');
 this.stompClient = Stomp.over(socket);
 const _this = this;
-this.stompClient.connect({username: this.name}, function (frame) {
+this.stompClient.connect({username: this.conversation.id}, function (frame) {
   _this.setConnected(true);
   _this.stompClient.subscribe('/users/topic/messages', function (hello) {
     _this.showConversation(hello.body);
@@ -87,7 +86,6 @@ showConversation(message : any) {
   const n = new Messages();
   n.content = message;
   this.conversation.messages.push(n);
-  console.log(this.conversation.messages);
 }
 
 sendMessage(content : string){
