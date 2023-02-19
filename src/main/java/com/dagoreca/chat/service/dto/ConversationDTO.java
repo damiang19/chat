@@ -10,9 +10,8 @@ import java.util.Objects;
 public class ConversationDTO implements Serializable {
 
     private Long id ;
-
+    private String conversationName;
     private List<String> conversationMembers;
-
     private List<MessagesDTO> messages;
 
     public ConversationDTO() {
@@ -57,6 +56,14 @@ public class ConversationDTO implements Serializable {
         return Objects.equals(id, that.id) && Objects.equals(conversationMembers, that.conversationMembers) && Objects.equals(messages, that.messages);
     }
 
+    public String getConversationName() {
+        return conversationName;
+    }
+
+    public void setConversationName(String conversationName) {
+        this.conversationName = conversationName;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, conversationMembers, messages);
@@ -68,6 +75,7 @@ public class ConversationDTO implements Serializable {
                 "id=" + id +
                 ", conversationMembers=" + conversationMembers +
                 ", messages=" + messages +
+                ", conversationName=" + conversationName +
                 '}';
     }
 }

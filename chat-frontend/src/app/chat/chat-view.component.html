@@ -2,14 +2,14 @@
 
   <div  class="row">
     <div class="col-2 bg-light" style="height: 750px;">
-      <label >Lista znajomych</label>
+      <label class="d-flex justify-content-center">Lista znajomych</label>
       <div *ngFor="let user of userList">
         <button type="button" style="width:100%" (click)="openConversation(user.login)" class="btn btn-secondary btn-block">{{user.login}}</button>
       </div>
     </div>
     <div class="col-10 bg-white row d-flex justify-content-center overflow-auto"  style="height: 750px; max-height: 750px;">
       <div *ngFor="let message of conversation.messages; index as i" class="d-flex justify-content-center">  
-        <span [style.background-color]="colourConversation(i)">{{message.content}}</span>
+        <span class="w-100 p-3" [style.background-color]="colourConversation(i)">{{message.content}}</span>
       </div>
     </div>
     <div class="col-2"></div>

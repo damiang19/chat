@@ -22,6 +22,6 @@ public class ConversationController {
     @MessageMapping("/hello")
     public void send(SimpMessageHeaderAccessor sha, @Payload MessageRequestDTO messagesDTO) {
         conversationService.updateConversation(messagesDTO);
-        simpMessagingTemplate.convertAndSendToUser(messagesDTO.getReceiver(), "/topic/messages", messagesDTO.getContent());
+        simpMessagingTemplate.convertAndSendToUser(sha.getUser().getName(), "/topic/messages", messagesDTO.getContent());
     }
 }
