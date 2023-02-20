@@ -1,0 +1,36 @@
+
+<div class="d-flex justify-content-center p-2">
+  <h2>Zarejestruj się</h2>
+  <form class="position-absolute top-50 start-50 translate-middle row w-45" [formGroup]="registrationForm" name="registrationForm" role="form" (ngSubmit)="registerNewUser()">
+    
+    <div class="form-group d-flex justify-content-center mb-3">
+      <input type="text" formControlName="login" class="form-control" id="login"  placeholder="Login">
+    </div>
+    <small class="form=text text=danger" *ngIf="registrationForm.get('login')?.errors?.required">This field is required</small>
+
+
+    <div class="form-group d-flex justify-content-center mb-3">
+      <input type="password" formControlName="password" class="form-control" id="Password" placeholder="Password">
+    </div>
+    <small class="form=text text=danger" *ngIf="registrationForm.get('password')?.errors?.required">This field is required</small>
+
+    <div class="form-group d-flex justify-content-center mb-3">
+      <input type="text" formControlName="firstName" class="form-control" id="firstName" placeholder="First name">
+    </div>
+    <small class="form=text text=danger" *ngIf="registrationForm.get('firstName')?.errors?.required">This field is required</small>
+
+    <div class="form-group d-flex justify-content-center mb-3">
+      <input type="text" formControlName="lastName" class="form-control" id="lastName" placeholder="Last name">
+    </div>
+    <small class="form=text text=danger" *ngIf="registrationForm.get('lastName')?.errors?.required">This field is required</small>
+
+
+    <div class="form-group d-flex justify-content-center mb-3">
+      <input type="text" formControlName="email" class="form-control" id="email" placeholder="Email">
+    </div>
+    <small class="form=text text=danger" *ngIf="registrationForm.get('email')?.errors?.required">This field is required</small>
+
+
+      <button type="submit" [disabled]="registrationForm.invalid" class="form-control btn btn-outline-primary btn-sm " >Utwórz konto</button>
+  </form>
+</div>

@@ -2,9 +2,6 @@ package com.dagoreca.chat.config;
 
 import com.dagoreca.chat.utils.security.JwtAuthenticationEntryPoint;
 import com.dagoreca.chat.utils.security.JwtTokenFilter;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,6 +45,8 @@ public class SecurityConfiguration {
                 .antMatchers("/authenticate").permitAll()
                 .antMatchers("/websocket/yol/**").permitAll()
                 .antMatchers("/register").permitAll()
+                .antMatchers("/friends").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/friend/conversation").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/convertAndSend/message").permitAll()
                 .antMatchers("/getMessage").permitAll()
                 .antMatchers("/users/**").permitAll()

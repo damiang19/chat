@@ -60,7 +60,7 @@ connect() {
 const socket = new SockJS('http://localhost:8080/websocket/yol');
 this.stompClient = Stomp.over(socket);
 const _this = this;
-this.stompClient.connect({username: this.conversation.id}, function (frame) {
+this.stompClient.connect({username: this.conversation.id,}, function (frame) {
   _this.setConnected(true);
   _this.stompClient.subscribe('/users/topic/messages', function (hello) {
     _this.showConversation(hello.body);
@@ -90,7 +90,7 @@ showConversation(message : any) {
 
 sendMessage(content : string){
   this.prepareMessageToSend(content);
-  this.stompClient.send("/hello", {}, JSON.stringify(this.messageRequest));
+  this.stompClient.send("/hello", {'Authorization':'Bearer'}, JSON.stringify(this.messageRequest));
 }
 
 prepareMessageToSend(content : string){

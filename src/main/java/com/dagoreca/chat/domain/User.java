@@ -19,18 +19,14 @@ public class User implements Principal {
     @Id
     private Long id;
 
+    private String email;
     @Indexed(unique = true)
     private String login;
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-
     private String firstName;
-
     private String lastName;
-
     private List<String> friends;
-
     private List<String> friendInvitations;
 
     public User(){}
@@ -97,6 +93,14 @@ public class User implements Principal {
 
     public void setFriendInvitations(List<String> friendInvitations) {
         this.friendInvitations = friendInvitations;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void addFriendInvitations(String login) {
