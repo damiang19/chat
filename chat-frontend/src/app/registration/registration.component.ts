@@ -11,10 +11,8 @@ import { UserService } from '../services/user.service';
 export class RegistrationComponent implements OnInit {
 
   registrationForm: FormGroup;
-  user: User;
 
   constructor(private userService : UserService, private fb: FormBuilder) {
-      this.user = new User();
       this.registrationForm = this.fb.group({
         login: [null,[Validators.required, Validators.minLength(6)]],
         firstName: [null,[Validators.required]],
