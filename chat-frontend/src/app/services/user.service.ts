@@ -25,7 +25,7 @@ export class UserService {
     }
 
     public searchForFriends(userLogin: string): Observable<HttpResponse<User[]>> {
-        return this.httpClient.get<User[]>(API_URL + '/search-for-friends', {observe: 'response'});
+        return this.httpClient.get<User[]>(API_URL + '/search-for-friends', {observe: 'response', params: {login: userLogin}});
     }
 
 }

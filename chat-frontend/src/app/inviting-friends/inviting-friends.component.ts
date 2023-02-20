@@ -9,11 +9,9 @@ import { UserService } from '../services/user.service';
 })
 export class InvitingFriendsComponent implements OnInit {
 
-  searchField : string;
   users: User[];
 
   constructor(private userService : UserService) {
-      this.searchField = '';
       this.users = [];
    }
 
@@ -21,8 +19,9 @@ export class InvitingFriendsComponent implements OnInit {
 
   }
 
-  findUsersByLogin() : void {
-    this.userService.searchForFriends(this.searchField).subscribe(response =>{
+  findUsersByLogin(login : string) : void {
+    console.log(login)
+    this.userService.searchForFriends(login).subscribe(response =>{
       this.users = response.body;
     })
   }

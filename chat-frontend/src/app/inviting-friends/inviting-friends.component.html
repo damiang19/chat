@@ -1,3 +1,14 @@
-<p>
-  inviting-friends works!
-</p>
+<div class="row">
+  <div class="form-group col-8 d-flex justify-content-center">
+    <input id="search_by_login" type="text" class="form-control" placeholder="Wyszukaj wpisując login" (keyup.enter)="findUsersByLogin($event.target.value)">
+  </div>
+</div>
+
+<div class="row" *ngFor="let user of users">
+  <div class="col-4">
+    <span>{{user.login}}</span>
+  </div>
+  <div class="col-1">
+    <button type="button" style="width:100%" (click)="openConversation(user.login)" class="btn btn-danger">Dodaj do znajomych</button>
+  </div>
+</div>
