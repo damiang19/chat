@@ -5,6 +5,8 @@ import com.dagoreca.chat.domain.User;
 import com.dagoreca.chat.service.ConversationService;
 import com.dagoreca.chat.service.UserService;
 import com.dagoreca.chat.service.dto.UserDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -20,10 +22,9 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-
-    private final ConversationService conversationService;
-
     private final MongoTemplate mongoTemplate;
+    private final ConversationService conversationService;
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public UserController(UserService userService, ConversationService conversationService, MongoTemplate mongoTemplate) {
         this.userService = userService;
@@ -33,24 +34,28 @@ public class UserController {
 
     @PostMapping(value = "/register")
     public ResponseEntity<User> saveUser(@Valid @RequestBody UserDTO user) {
+        logger.debug("REST request to register new User : {}",user);
         User newUser = userService.createNewUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
     @PutMapping(value = "/update-user")
     public ResponseEntity<User> updateAccountDetails(@Valid @RequestBody UserDTO user) {
+        logger.debug("REST request to update User account details: {}",user);
         User newUser = userService.createNewUser(user);
         return ResponseEntity.status(HttpStatus.OK).body(newUser);
     }
 
     @GetMapping(value="/users")
     public ResponseEntity<List<UserDTO>> findUsers(){
+        logger.debug("REST request to get all users");
         return ResponseEntity.ok(userService.findAll());
     }
 
 
     @DeleteMapping(value = "/users/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id){
+        logger.debug("REST request to delete user with id: {}",id);
         try{
             userService.deleteById(id);
            } catch (Exception exception){
@@ -59,8 +64,10 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    // TODO : przeniesc interakcje pomiedzy znajomymi to osobnego kontrolera
         @GetMapping(value = "/friends")
         public ResponseEntity<List<User>> getFriends() {
+            logger.debug("REST request to get friends list ");
             UserDTO currentUser =  userService.getCurrentUser();
             Query query = new Query();
             query.addCriteria(Criteria.where("login").in(currentUser.getFriends()));
@@ -78,7 +85,7 @@ public class UserController {
     }
 
 
-    @PutMapping(value = "accept-friend-invitation")
+    @PutMapping(value = "/accept-friend-invitation")
     public ResponseEntity<Void> acceptInvitationToFriendList(@RequestParam String login){
         UserDTO currentUser =  userService.getCurrentUser();
         currentUser.getFriendInvitations().stream()
@@ -92,7 +99,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(value = "send-friend-invitation")
+    @PutMapping(value = "/send-friend-invitation")
     public ResponseEntity<Void> sendInvitationToFriendList(@RequestParam String login){
         UserDTO userDTO =  userService.getCurrentUser();
         try{

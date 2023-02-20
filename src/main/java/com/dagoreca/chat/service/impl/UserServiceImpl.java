@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createNewUser(UserDTO userDTO){
-        logger.info("Creating new user");
+        logger.info("Creating new user with login: {}",userDTO.getLogin());
         userDTO.setId(sequenceGeneratorService.generateSequence(User.SEQUENCE_NAME));
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return userRepository.save(userMapper.toEntity(userDTO));
@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(UserDTO userDTO) {
+        logger.info("Updating user with login: {}",userDTO.getLogin());
         User user =  userMapper.toEntity(userDTO);
         userRepository.save(user);
         return userMapper.toDto(user);
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserDTO> findOne(String login) {
-        logger.debug("Request to get User with id : {}",login);
+        logger.debug("Request to get User with login : {}",login);
         return userRepository.findByLogin(login).map(userMapper::toDto);
     }
 

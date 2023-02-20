@@ -1,6 +1,5 @@
 package com.dagoreca.chat.controller;
 
-import com.dagoreca.chat.repository.ConversationRepository;
 import com.dagoreca.chat.service.ConversationService;
 import com.dagoreca.chat.service.dto.MessageRequestDTO;
 import org.springframework.messaging.handler.annotation.MessageMapping;

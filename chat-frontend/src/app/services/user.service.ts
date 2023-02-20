@@ -19,4 +19,8 @@ export class UserService {
     public getConversation(friendLogin: string): Observable<HttpResponse<Conversation>> {
         return this.httpClient.get<Conversation>(API_URL+'/friend/conversation',{observe:'response', params:{'friendLogin': friendLogin}})
     }
+
+    public registerUser(user: User): Observable<HttpResponse<User>> {
+        return this.httpClient.post<User>(API_URL + '/register', user, {observe: 'response'});
+    }
 }

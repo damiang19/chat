@@ -3,7 +3,6 @@ package com.dagoreca.chat.controller;
 import com.dagoreca.chat.service.dto.jwt.JwtRequestDTO;
 import com.dagoreca.chat.service.dto.jwt.JwtResponseDTO;
 import com.dagoreca.chat.utils.security.JwtTokenUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,17 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AuthenticationController {
-
+    private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    public AuthenticationController(UserDetailsService userDetailsService, JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager) {
+    public AuthenticationController(UserDetailsService userDetailsService, JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil1, AuthenticationManager authenticationManager1) {
         this.userDetailsService = userDetailsService;
+        this.jwtTokenUtil = jwtTokenUtil1;
+        this.authenticationManager = authenticationManager1;
     }
 
     @PostMapping(value = "/authenticate")
