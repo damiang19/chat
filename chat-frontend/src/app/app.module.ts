@@ -10,14 +10,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
 import { ChatViewComponent } from './chat/chat-view.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { InvitingFriendsComponent } from './inviting-friends/inviting-friends.component';
 
 @NgModule({
-  declarations: [	
+  declarations: [		
     AppComponent,
     LoginComponent,
     ChatViewComponent,
     HeaderComponent,
-    RegistrationComponent
+    RegistrationComponent,
+      InvitingFriendsComponent
    ],
   imports: [
     BrowserModule,

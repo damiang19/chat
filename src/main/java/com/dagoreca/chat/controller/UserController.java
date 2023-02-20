@@ -75,6 +75,7 @@ public class UserController {
             return ResponseEntity.ok().body(friends);
         }
 
+
     @GetMapping(value = "/friend/conversation")
     public ResponseEntity<Conversation> getConversation(@RequestParam String friendLogin) {
         UserDTO currentUser =  userService.getCurrentUser();
@@ -82,6 +83,13 @@ public class UserController {
         query.addCriteria(Criteria.where("conversationMembers").in(currentUser,friendLogin));
         Conversation friends = mongoTemplate.findOne(query, Conversation.class);
         return ResponseEntity.ok().body(friends);
+    }
+
+    @GetMapping(value = "/search-for-friends")
+    public ResponseEntity<List<UserDTO>> findUsers(@RequestParam String login) {
+        logger.debug("REST request to find users");
+        List<UserDTO> userDTOList =  userService.findAllByLogin(login);
+        return ResponseEntity.ok().body(userDTOList);
     }
 
 

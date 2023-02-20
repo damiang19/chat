@@ -23,7 +23,7 @@ public interface UserService {
 
     List<UserDTO> findAll();
 
-
+    List<UserDTO> findAllByLogin(String login);
 
 
 }

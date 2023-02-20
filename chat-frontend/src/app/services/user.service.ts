@@ -23,4 +23,9 @@ export class UserService {
     public registerUser(user: User): Observable<HttpResponse<User>> {
         return this.httpClient.post<User>(API_URL + '/register', user, {observe: 'response'});
     }
+
+    public searchForFriends(userLogin: string): Observable<HttpResponse<User[]>> {
+        return this.httpClient.get<User[]>(API_URL + '/search-for-friends', {observe: 'response'});
+    }
+
 }

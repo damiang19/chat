@@ -78,4 +78,11 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> findAll() {
         return userMapper.toDto(userRepository.findAll());
     }
+
+    @Override
+    public List<UserDTO> findAllByLogin(String login) {
+        logger.debug("Request to find users with login starting with:{}", login);
+        List<User> userList =  userRepository.findAllByLoginStartingWith(login);
+        return userMapper.toDto(userList);
+    }
 }
