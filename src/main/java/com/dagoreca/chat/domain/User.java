@@ -1,13 +1,12 @@
 package com.dagoreca.chat.domain;
 
+import com.dagoreca.chat.domain.enums.Roles;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 @Document("uzytkownik")
@@ -18,7 +17,6 @@ public class User implements Principal {
 
     @Id
     private Long id;
-
     private String email;
     @Indexed(unique = true)
     private String login;
@@ -28,6 +26,8 @@ public class User implements Principal {
     private String lastName;
     private List<String> friends;
     private List<String> friendInvitations;
+
+    private Set<Roles> roles = new HashSet<>();
 
     public User(){}
 
