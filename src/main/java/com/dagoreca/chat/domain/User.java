@@ -117,6 +117,21 @@ public class User implements Principal {
         friends.add(login);
     }
 
+    public void addRoles(String role) {
+        if (roles == null) {
+            roles = new HashSet<>();
+        }
+        roles.add(Roles.valueOf(role));
+    }
+
+    public Set<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

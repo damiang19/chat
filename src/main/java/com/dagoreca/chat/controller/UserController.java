@@ -40,9 +40,9 @@ public class UserController {
     }
 
     @PutMapping(value = "/update-user")
-    public ResponseEntity<User> updateAccountDetails(@Valid @RequestBody UserDTO user) {
+    public ResponseEntity<UserDTO> updateAccountDetails(@Valid @RequestBody UserDTO user) {
         logger.debug("REST request to update User account details: {}",user);
-        User newUser = userService.createNewUser(user);
+        UserDTO newUser = userService.updateUser(user);
         return ResponseEntity.status(HttpStatus.OK).body(newUser);
     }
 
