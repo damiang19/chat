@@ -1,6 +1,7 @@
 package com.dagoreca.chat.domain;
 
 import com.dagoreca.chat.domain.enums.Roles;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,6 +17,7 @@ public class User implements Principal {
     public static final String SEQUENCE_NAME = "users_sequence";
 
     @Id
+    @JsonIgnore
     private Long id;
     private String email;
     @Indexed(unique = true)

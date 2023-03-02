@@ -11,11 +11,10 @@ import java.util.*;
 
 public class UserDTO implements Serializable {
 
+    @JsonIgnore
     private Long id;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String login;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String password;
 
     private String firstName;
@@ -23,7 +22,7 @@ public class UserDTO implements Serializable {
     private String lastName;
 
     private List<String> friends;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+
     private List<String> friendInvitations;
 
     private Set<Roles> roles = new HashSet<>();

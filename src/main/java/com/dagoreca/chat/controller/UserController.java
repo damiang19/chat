@@ -24,7 +24,7 @@ public class UserController {
     private final UserService userService;
     private final MongoTemplate mongoTemplate;
     private final ConversationService conversationService;
-    private final Logger logger = LoggerFactory.getLogger(UserService.class);
+    private Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public UserController(UserService userService, ConversationService conversationService, MongoTemplate mongoTemplate) {
         this.userService = userService;
