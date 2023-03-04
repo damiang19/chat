@@ -41,7 +41,7 @@ public class SecurityConfiguration {
         http.cors().and()
                 .authorizeRequests()
                 .antMatchers("/authenticate").permitAll()
-                .antMatchers("/websocket/yol/**").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
+                .antMatchers("/websocket/yol/**").permitAll()
                 .antMatchers("/friends").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
                 .antMatchers("/friend/conversation").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
                 .antMatchers("/convertAndSend/message").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
