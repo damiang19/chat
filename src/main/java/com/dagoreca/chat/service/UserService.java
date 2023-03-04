@@ -15,9 +15,9 @@ public interface UserService {
 
     void deleteById(Long id);
 
-    Optional<UserDTO> findOne(Long id);
+    UserDTO findOne(Long id);
 
-    Optional<UserDTO> findOne(String login);
+    UserDTO findOne(String login);
 
     UserDTO getCurrentUser();
 

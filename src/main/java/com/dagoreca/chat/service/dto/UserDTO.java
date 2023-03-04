@@ -2,18 +2,19 @@ package com.dagoreca.chat.service.dto;
 
 
 import com.dagoreca.chat.domain.User;
+import com.dagoreca.chat.domain.enums.Roles;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class UserDTO implements Serializable {
 
+    @JsonIgnore
     private Long id;
 
     private String login;
-
     private String password;
 
     private String firstName;
@@ -23,6 +24,9 @@ public class UserDTO implements Serializable {
     private List<String> friends;
 
     private List<String> friendInvitations;
+
+    private Set<Roles> roles = new HashSet<>();
+
 
     public UserDTO() {
     }
@@ -91,6 +95,21 @@ public class UserDTO implements Serializable {
             friends = new ArrayList<>();
         }
         friends.add(login);
+    }
+
+    public void addRoles(String role) {
+        if (roles == null) {
+            roles = new HashSet<>();
+        }
+        roles.add(Roles.valueOf(role));
+    }
+
+    public Set<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
     }
 
     public void setFriendInvitations(List<String> friendInvitations) {
