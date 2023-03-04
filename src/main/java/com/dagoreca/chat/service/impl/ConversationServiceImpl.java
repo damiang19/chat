@@ -2,26 +2,29 @@ package com.dagoreca.chat.service.impl;
 
 
 import com.dagoreca.chat.domain.Conversation;
-import com.dagoreca.chat.domain.User;
 import com.dagoreca.chat.repository.ConversationRepository;
 import com.dagoreca.chat.service.ConversationService;
+import com.dagoreca.chat.service.UserService;
 import com.dagoreca.chat.service.dto.ConversationDTO;
 import com.dagoreca.chat.service.dto.MessageRequestDTO;
 import com.dagoreca.chat.service.dto.MessagesDTO;
 import com.dagoreca.chat.service.dto.UserDTO;
 import com.dagoreca.chat.service.mapper.ConversationMapper;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 public class ConversationServiceImpl implements ConversationService {
+
+    private final UserService userService;
+    private final MongoTemplate mongoTemplate;
 
     private ConversationMapper conversationMapper;
 
@@ -29,7 +32,10 @@ public class ConversationServiceImpl implements ConversationService {
 
     private final SequenceGeneratorService sequenceGeneratorService;
 
-    public ConversationServiceImpl(ConversationMapper conversationMapper, ConversationRepository conversationRepository, SequenceGeneratorService sequenceGeneratorService) {
+    public ConversationServiceImpl(UserService userService, MongoTemplate mongoTemplate, ConversationMapper conversationMapper, ConversationRepository conversationRepository,
+                                   SequenceGeneratorService sequenceGeneratorService) {
+        this.userService = userService;
+        this.mongoTemplate = mongoTemplate;
         this.conversationMapper = conversationMapper;
         this.conversationRepository = conversationRepository;
         this.sequenceGeneratorService = sequenceGeneratorService;
@@ -53,6 +59,14 @@ public class ConversationServiceImpl implements ConversationService {
        actualConversation.addMessages(messagesDTO);
        conversationRepository.save(actualConversation);
        return conversationMapper.toDto(actualConversation);
+    }
+
+    @Override
+    public ConversationDTO getConversation(String friendLogin) {
+        String currentUser =  userService.getCurrentUser().getLogin();
+        Query query = new Query();
+        query.addCriteria(Criteria.where("conversationMembers").in(currentUser,friendLogin));
+        return conversationMapper.toDto(mongoTemplate.findOne(query, Conversation.class));
     }
 
 }

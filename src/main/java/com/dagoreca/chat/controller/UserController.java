@@ -64,52 +64,14 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    // TODO : przeniesc interakcje pomiedzy znajomymi to osobnego kontrolera
-        @GetMapping(value = "/friends")
-        public ResponseEntity<List<User>> getFriends() {
-            logger.debug("REST request to get friends list ");
-            UserDTO currentUser =  userService.getCurrentUser();
-            Query query = new Query();
-            query.addCriteria(Criteria.where("login").in(currentUser.getFriends()));
-            List<User> friends = mongoTemplate.find(query, User.class);
-            return ResponseEntity.ok().body(friends);
-        }
 
     @GetMapping(value = "/friend/conversation")
     public ResponseEntity<Conversation> getConversation(@RequestParam String friendLogin) {
         UserDTO currentUser =  userService.getCurrentUser();
         Query query = new Query();
         query.addCriteria(Criteria.where("conversationMembers").in(currentUser,friendLogin));
-        Conversation friends = mongoTemplate.findOne(query, Conversation.class);
-        return ResponseEntity.ok().body(friends);
+        Conversation conversation = mongoTemplate.findOne(query, Conversation.class);
+        return ResponseEntity.ok().body(conversation);
     }
 
-
-    @PutMapping(value = "/accept-friend-invitation")
-    public ResponseEntity<Void> acceptInvitationToFriendList(@RequestParam String login){
-        UserDTO currentUser =  userService.getCurrentUser();
-        currentUser.getFriendInvitations().stream()
-                .filter(user -> user.startsWith(login)).findFirst()
-                .ifPresent(user -> {
-                    currentUser.addFriends(user);
-                    currentUser.getFriendInvitations().remove(user);
-                    userService.updateUser(currentUser);
-                    conversationService.createConversation(List.of(currentUser.getLogin(),login));
-                });
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping(value = "/send-friend-invitation")
-    public ResponseEntity<Void> sendInvitationToFriendList(@RequestParam String login){
-        UserDTO userDTO =  userService.getCurrentUser();
-        try{
-            userService.findOne(login).ifPresent(receiver ->{
-               receiver.addFriendInvitations(userDTO.getLogin());
-               userService.updateUser(receiver);
-            });
-            return ResponseEntity.noContent().build();
-        }catch(Exception exception){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-    }
 }
