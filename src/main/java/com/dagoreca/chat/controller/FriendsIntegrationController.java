@@ -1,9 +1,9 @@
 package com.dagoreca.chat.controller;
 
 
-import com.dagoreca.chat.domain.Conversation;
 import com.dagoreca.chat.service.ConversationService;
 import com.dagoreca.chat.service.FriendsIntegrationService;
+import com.dagoreca.chat.service.UserService;
 import com.dagoreca.chat.service.dto.ConversationDTO;
 import com.dagoreca.chat.service.dto.UserDTO;
 import org.slf4j.Logger;
@@ -19,11 +19,13 @@ import java.util.List;
 @RestController
 public class FriendsIntegrationController {
 
+    private final UserService userService;
     private final ConversationService conversationService;
     private final FriendsIntegrationService friendsIntegrationService;
     private Logger logger = LoggerFactory.getLogger(FriendsIntegrationController.class);
 
-    public FriendsIntegrationController(ConversationService conversationService, FriendsIntegrationService friendsIntegrationService) {
+    public FriendsIntegrationController(UserService userService, ConversationService conversationService, FriendsIntegrationService friendsIntegrationService) {
+        this.userService = userService;
         this.conversationService = conversationService;
         this.friendsIntegrationService = friendsIntegrationService;
     }
@@ -51,5 +53,12 @@ public class FriendsIntegrationController {
     public ResponseEntity<ConversationDTO> getConversation(@RequestParam String friendLogin) {
         ConversationDTO conversationDTO = conversationService.getConversation(friendLogin);
         return ResponseEntity.ok().body(conversationDTO);
+    }
+
+    @GetMapping(value = "/search-for-friends")
+    public ResponseEntity<List<UserDTO>> findUsers(@RequestParam String login) {
+        logger.debug("REST request to find users");
+        List<UserDTO> userDTOList =  userService.findAllByLogin(login);
+        return ResponseEntity.ok().body(userDTOList);
     }
 }

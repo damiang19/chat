@@ -12,15 +12,11 @@ export class UserService {
 
     constructor(private httpClient: HttpClient,private router: Router) { }
 
-    public getFriends(): Observable<HttpResponse<User[]>> {
-        return this.httpClient.get<User[]>(API_URL+'/friends',{observe:'response'})
-    }
-      
-    public getConversation(friendLogin: string): Observable<HttpResponse<Conversation>> {
-        return this.httpClient.get<Conversation>(API_URL+'/friend/conversation',{observe:'response', params:{'friendLogin': friendLogin}})
-    }
-
     public registerUser(user: User): Observable<HttpResponse<User>> {
         return this.httpClient.post<User>(API_URL + '/register', user, {observe: 'response'});
+    }
+
+    public getCurrentUser(): Observable<HttpResponse<User>> {
+        return this.httpClient.get<User>(API_URL+'/current-user',{observe:'response'})
     }
 }

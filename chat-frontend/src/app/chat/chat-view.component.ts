@@ -10,6 +10,7 @@ import { Conversation } from '../models/conversation';
 import { MessageRequest } from '../models/message-request';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { Messages } from '../models/messages';
+import { FriendsIntegrationService } from '../services/friends-integration.service';
 
 @Component({
   selector: 'chat-view',
@@ -25,7 +26,7 @@ export class ChatViewComponent implements OnInit {
   userList : User[];
   messageRequest: MessageRequest;
   
-  constructor( private ws : WebSocketService,private jwtService: JwtService,private userService : UserService) { 
+  constructor( private ws : WebSocketService,private userService : UserService, private friendsIntegrationService : FriendsIntegrationService) { 
     this.name = '';
     this.message = '';
     this.userList = [];
@@ -39,8 +40,7 @@ export class ChatViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getFriends().subscribe(response => {
-      console.log(response.body);
+    this.friendsIntegrationService.getFriends().subscribe(response => {
       this.userList = response.body;
     })
   }
@@ -51,7 +51,7 @@ export class ChatViewComponent implements OnInit {
 
   openConversation(friendLogin : string): void {
     this.currentUser = friendLogin;
-    this.userService.getConversation(friendLogin).subscribe(response =>{
+    this.friendsIntegrationService.getConversation(friendLogin).subscribe(response =>{
       this.conversation = response.body;
     },err =>{},() => { this.connect();})
   }

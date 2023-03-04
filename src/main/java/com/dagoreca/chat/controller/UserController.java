@@ -34,33 +34,40 @@ public class UserController {
 
     @PostMapping(value = "/register")
     public ResponseEntity<User> saveUser(@Valid @RequestBody UserDTO user) {
-        logger.debug("REST request to register new User : {}",user);
+        logger.debug("REST request to register new User : {}", user);
         User newUser = userService.createNewUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
     @PutMapping(value = "/update-user")
     public ResponseEntity<UserDTO> updateAccountDetails(@Valid @RequestBody UserDTO user) {
-        logger.debug("REST request to update User account details: {}",user);
+        logger.debug("REST request to update User account details: {}", user);
         UserDTO newUser = userService.updateUser(user);
         return ResponseEntity.status(HttpStatus.OK).body(newUser);
     }
 
-    @GetMapping(value="/users")
-    public ResponseEntity<List<UserDTO>> findUsers(){
+    @GetMapping(value = "/users")
+    public ResponseEntity<List<UserDTO>> findUsers() {
         logger.debug("REST request to get all users");
         return ResponseEntity.ok(userService.findAll());
     }
 
+    @GetMapping(value = "/current-user")
+    public ResponseEntity<UserDTO> getCurrentUser() {
+        logger.debug("REST request to get all users");
+        UserDTO userDTO = userService.getCurrentUser();
+        return ResponseEntity.ok(userDTO);
+    }
+
 
     @DeleteMapping(value = "/users/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
-        logger.debug("REST request to delete user with id: {}",id);
-        try{
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        logger.debug("REST request to delete user with id: {}", id);
+        try {
             userService.deleteById(id);
-           } catch (Exception exception){
+        } catch (Exception exception) {
             return ResponseEntity.notFound().build();
-            }
+        }
         return ResponseEntity.noContent().build();
     }
 

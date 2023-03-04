@@ -37,8 +37,6 @@ export class WebSocketService {
     }
   }
   showGreeting(message : any) {
-    debugger;
-    console.log(message);
   }
 
   sendMessage(message : string){
