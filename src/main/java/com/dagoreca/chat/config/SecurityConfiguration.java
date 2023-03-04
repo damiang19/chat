@@ -48,6 +48,7 @@ public class SecurityConfiguration {
                 .antMatchers("/getMessage").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
                 .antMatchers("/users").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
                 .antMatchers("/register").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
+                .antMatchers("/current-user").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable();

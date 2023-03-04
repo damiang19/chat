@@ -1,14 +1,22 @@
 <div class="row">
-  <div class="form-group col-8 d-flex justify-content-center">
+  <div class="form-group col-12 p-4">
+    <h2 for="search_by_login" class="d-flex justify-content-center">Szukaj znajomych</h2>
     <input id="search_by_login" type="text" class="form-control" placeholder="Wyszukaj wpisując login" (keyup.enter)="findUsersByLogin($event.target.value)">
   </div>
 </div>
 
-<div class="row" *ngFor="let user of users">
-  <div class="col-4">
-    <span>{{user.login}}</span>
+ 
+
+
+<div class="row pt-4" *ngFor="let user of users">
+  <div class="col-1 d-flex justify-content-center">
+    <img src="/assets/images/user-avatar.png" alt="Girl in a jacket"  width="80" height="80">
   </div>
   <div class="col-1">
-    <button type="button" style="width:100%" (click)="openConversation(user.login)" class="btn btn-danger">Dodaj do znajomych</button>
+    <span>{{user.firstName + " "+ user.lastName}}</span>
+  </div>
+  <div class="col-1">
+    <button *ngIf="showSendFriendInvitationButton(user.login)" type="button" style="width:100%" (click)="sendFriendInvitation(user.login)" class="btn btn-danger">Dodaj do znajomych</button>
+    <button *ngIf="!showSendFriendInvitationButton(user.login)" type="button" style="width:100%" class="btn btn-danger">Pokaż profil</button>
   </div>
 </div>

@@ -40,8 +40,4 @@ export class JwtService {
     public getToken(): string {
       return localStorage.getItem(JwtService.TOKEN_STORAGE_KEY);
     }
-    
-    public getPosts(): Observable<HttpResponse<any>>{
-      return this.httpClient.get<HttpResponse<any>>(API_URL+'/api/decks',{observe:'response'})
-    }
 }
