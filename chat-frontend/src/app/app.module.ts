@@ -19,7 +19,7 @@ import { InvitingFriendsComponent } from './inviting-friends/inviting-friends.co
     ChatViewComponent,
     HeaderComponent,
     RegistrationComponent,
-      InvitingFriendsComponent
+    InvitingFriendsComponent
    ],
   imports: [
     BrowserModule,
