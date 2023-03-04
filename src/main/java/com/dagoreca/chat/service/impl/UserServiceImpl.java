@@ -5,12 +5,15 @@ import com.dagoreca.chat.repository.UserRepository;
 import com.dagoreca.chat.service.UserService;
 import com.dagoreca.chat.service.dto.UserDTO;
 import com.dagoreca.chat.service.mapper.UserMapper;
+import com.dagoreca.chat.utils.exceptions.UserNotFoundException;
 import com.dagoreca.chat.utils.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,8 +36,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createNewUser(UserDTO userDTO){
-        logger.info("Creating new user with login: {}",userDTO.getLogin());
+    public User createNewUser(UserDTO userDTO) {
+        logger.info("Creating new user with login: {}", userDTO.getLogin());
         userDTO.setId(sequenceGeneratorService.generateSequence(User.SEQUENCE_NAME));
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return userRepository.save(userMapper.toEntity(userDTO));
@@ -42,36 +45,51 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(UserDTO userDTO) {
-        logger.info("Updating user with login: {}",userDTO.getLogin());
-        User user =  userMapper.toEntity(userDTO);
+        logger.info("Updating user with login: {}", userDTO.getLogin());
+        User user = userRepository.findById(userDTO.getId()).get();
         userRepository.save(user);
         return userMapper.toDto(user);
     }
 
     @Override
     public void deleteById(Long id) {
-        try{
+        if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
-        } catch (Exception exception){
-
+        } else {
+            throw new UserNotFoundException("User with id:" + id + "has not been found");
         }
     }
 
     @Override
-    public Optional<UserDTO> findOne(Long id) {
-        logger.debug("Request to get User with id : {}",id);
-        return userRepository.findById(id).map(userMapper::toDto);
+    public UserDTO findOne(Long id) {
+        logger.debug("Request to get User with id : {}", id);
+        Optional<User> userDTO = userRepository.findById(id);
+        if (userDTO.isPresent()) {
+            return userMapper.toDto(userDTO.get());
+        } else {
+            throw new UserNotFoundException("User with id:" + id + "has not been found");
+        }
     }
 
     @Override
-    public Optional<UserDTO> findOne(String login) {
-        logger.debug("Request to get User with login : {}",login);
-        return userRepository.findByLogin(login).map(userMapper::toDto);
+    public UserDTO findOne(String login) {
+        logger.debug("Request to get User with login : {}", login);
+        Optional<User> userDTO = userRepository.findByLogin(login);
+        if (userDTO.isPresent()) {
+            return userMapper.toDto(userDTO.get());
+        } else {
+            throw new UserNotFoundException("User with login:" + login + "has not been found");
+        }
     }
 
     @Override
     public UserDTO getCurrentUser() {
-        return findOne(SecurityUtils.getCurrentUserLogin().get()).get();
+        Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
+        if (currentUserLogin.isPresent()) {
+            return findOne(currentUserLogin.get());
+        } else {
+            throw new UserNotFoundException("You are not logged");
+        }
     }
 
     @Override

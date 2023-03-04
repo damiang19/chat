@@ -9,4 +9,6 @@ public interface ConversationService {
     ConversationDTO createConversation(List<String> userList);
 
     ConversationDTO updateConversation(MessageRequestDTO messageRequestDTO);
+
+    ConversationDTO getConversation(String login);
 }

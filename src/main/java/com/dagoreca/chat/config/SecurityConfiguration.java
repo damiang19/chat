@@ -36,21 +36,19 @@ public class SecurityConfiguration {
     @Autowired
     private JwtTokenFilter jwtRequestFilter;
 
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and()
                 .authorizeRequests()
                 .antMatchers("/authenticate").permitAll()
                 .antMatchers("/websocket/yol/**").permitAll()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/friends").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/friend/conversation").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/convertAndSend/message").permitAll()
-                .antMatchers("/getMessage").permitAll()
-                .antMatchers("/users/**").permitAll()
-                .anyRequest().authenticated().and()
+                .antMatchers("/friends").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
+                .antMatchers("/friend/conversation").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
+                .antMatchers("/convertAndSend/message").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
+                .antMatchers("/getMessage").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
+                .antMatchers("/users").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
+                .antMatchers("/register").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
+                .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable();
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
