@@ -40,4 +40,17 @@ export class JwtService {
     public getToken(): string {
       return localStorage.getItem(JwtService.TOKEN_STORAGE_KEY);
     }
+
+    public removeToken(): void {
+      localStorage.removeItem(JwtService.TOKEN_STORAGE_KEY);
+    }
+
+    public isLoggedIn(): boolean {
+      
+      if(localStorage.getItem(JwtService.TOKEN_STORAGE_KEY) !== null){
+        return true; 
+      } else {
+        return false;
+      }
+    }
 }

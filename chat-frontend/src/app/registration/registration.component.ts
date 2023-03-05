@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { User } from '../models/user';
 import { UserService } from '../services/user.service';
 
@@ -12,7 +13,7 @@ export class RegistrationComponent implements OnInit {
 
   registrationForm: FormGroup;
 
-  constructor(private userService : UserService, private fb: FormBuilder) {
+  constructor(private userService : UserService, private fb: FormBuilder, private router : Router) {
       this.registrationForm = this.fb.group({
         login: [null,[Validators.required, Validators.minLength(6)]],
         firstName: [null,[Validators.required]],

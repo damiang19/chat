@@ -1,7 +1,22 @@
 
-<body class="bg-primary">
-<div>
-  
-</div>
+<body class="bg-warning">
 
+<div class="row">
+    <div class="col-5"></div>
+    <div class="col-2 d-flex justify-content-center">
+        <img src="/assets/images/banner-icon.png" alt="Girl in a jacket"  width="80" height="80">
+    </div>
+    <div class="col-5 d-flex justify-content-end p-4">
+        <div *ngIf="!isLoggedIn">
+            <button type="button" routerLink="/register" class="btn btn-danger">Rejestracja</button>
+            <button type="button" routerLink="/"  class="btn btn-danger">Logowanie</button>
+        </div>
+        <div *ngIf="isLoggedIn">
+            <button type="button" routerLink="/search-for-friends"  class="btn btn-danger">Wyszukaj znajomych</button>
+            <button type="button" routerLink="/chat"   class="btn btn-danger">Czat</button>
+            <button type="button" (click)="logout()"  class="btn btn-danger">Wyloguj</button>
+        </div> 
+    </div>
+</div>
+   
 </body>

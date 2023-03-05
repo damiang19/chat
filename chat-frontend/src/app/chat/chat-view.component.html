@@ -7,7 +7,7 @@
         <button type="button" style="width:100%" (click)="openConversation(user.login)" class="btn btn-secondary btn-block">{{user.login}}</button>
       </div>
     </div>
-    <div class="col-10 bg-white row d-flex justify-content-center overflow-auto"  style="height: 750px; max-height: 750px;">
+    <div class="col-10 bg-white row d-flex justify-content-center overflow-auto"  style="height: 750px; max-height: 750px; overflow: scroll; height: xyz;" #scrollMe>
       <div *ngFor="let message of conversation.messages; index as i" class="d-flex justify-content-center">  
         <span class="w-100 p-3" [style.background-color]="colourConversation(i)">{{message.content}}</span>
       </div>

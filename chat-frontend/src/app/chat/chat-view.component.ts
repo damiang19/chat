@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CompatClient, Stomp } from '@stomp/stompjs';
 import { WebSocketService } from '../services/WebSocket.service';
 import * as SockJS from 'sockjs-client';
@@ -17,7 +17,10 @@ import { FriendsIntegrationService } from '../services/friends-integration.servi
   templateUrl: './chat-view.component.html',
   styleUrls: ['./chat-view.component.scss']
 })
-export class ChatViewComponent implements OnInit {
+export class ChatViewComponent implements OnInit, AfterViewChecked  {
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+
+
   name : string;
   message : string;
   currentUser: string;
@@ -40,6 +43,7 @@ export class ChatViewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.scrollToBottom();
     this.friendsIntegrationService.getFriends().subscribe(response => {
       this.userList = response.body;
     })
@@ -97,6 +101,16 @@ prepareMessageToSend(content : string){
   this.messageRequest.content = content;
   this.messageRequest.conversationId = this.conversation.id;
   this.messageRequest.receiver = this.currentUser;
+}
+
+ngAfterViewChecked() {        
+  this.scrollToBottom();     
+} 
+
+scrollToBottom(): void {
+  try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+  } catch(err) { }                 
 }
 
 }
