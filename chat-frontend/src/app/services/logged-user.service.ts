@@ -3,7 +3,7 @@ import { CanActivate, Router } from "@angular/router";
 import { AppRoutingModule } from "../app-routing.module";
 import { JwtService } from "./jwt.service";
 
-@Injectable({providedIn: AppRoutingModule})
+@Injectable({providedIn: 'root'})
 export class OnlyLoggedInUsersGuard implements CanActivate { 
   constructor(private jwtService: JwtService, private router : Router) {}; 
 

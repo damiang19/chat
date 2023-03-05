@@ -1,6 +1,7 @@
-<body>
-  <div class="bg-success p-2">
-<form class="position-absolute top-50 start-50 translate-middle row w-45 ">
+<body class="bg-light">
+
+<form class="position-absolute top-50 start-50 translate-middle row w-45">
+  <h2 for="login" class="d-flex justify-content-center">Zaloguj się</h2>
   <div class="form-group d-flex justify-content-center mb-3">
     <input type="login" class="form-control" id="login"  placeholder="Login" [(ngModel)]="credentials.username" ngModel [ngModelOptions]="{standalone: true}">
   </div>
@@ -8,8 +9,11 @@
     <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" [(ngModel)]="credentials.password" ngModel [ngModelOptions]="{standalone: true}">
   </div>
   <button class="form-control btn btn-outline-primary btn-sm  " (click)="login()">Zaloguj</button>
-  <!-- <button class="form-control" (click)="getDeck()">Przycisk</button> -->
-
+  <div>
+    <label>Nie masz konta ?</label><a routerLink="/register"> Zarejestruj się</a>
+  </div>
 </form>
-</div>
+
+
+
 </body>
