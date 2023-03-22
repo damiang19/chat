@@ -1,6 +1,7 @@
 package com.dagoreca.chat.service.dto;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -10,9 +11,11 @@ public class MessagesDTO {
 
     private Instant sendDate;
 
-    private Boolean arrived;
+    private Instant dateOfReading;
 
     private String author;
+
+    private List<String> whoReadTheMessage;
 
     public MessagesDTO(){
 
@@ -42,12 +45,21 @@ public class MessagesDTO {
         this.sendDate = sendDate;
     }
 
-    public Boolean getArrived() {
-        return arrived;
+
+    public Instant getDateOfReading() {
+        return dateOfReading;
     }
 
-    public void setArrived(Boolean arrived) {
-        this.arrived = arrived;
+    public void setDateOfReading(Instant dateOfReading) {
+        this.dateOfReading = dateOfReading;
+    }
+
+    public List<String> getWhoReadTheMessage() {
+        return whoReadTheMessage;
+    }
+
+    public void setWhoReadTheMessage(List<String> whoReadTheMessage) {
+        this.whoReadTheMessage = whoReadTheMessage;
     }
 
     @Override
@@ -55,12 +67,12 @@ public class MessagesDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MessagesDTO that = (MessagesDTO) o;
-        return Objects.equals(content, that.content) && Objects.equals(sendDate, that.sendDate) && Objects.equals(arrived, that.arrived) && Objects.equals(author, that.author);
+        return Objects.equals(content, that.content) && Objects.equals(sendDate, that.sendDate) && Objects.equals(dateOfReading, that.dateOfReading) && Objects.equals(author, that.author);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(content, sendDate, arrived, author);
+        return Objects.hash(content, sendDate, dateOfReading, author);
     }
 
     @Override
@@ -68,7 +80,7 @@ public class MessagesDTO {
         return "MessagesDTO{" +
                 "content='" + content + '\'' +
                 ", sendDate=" + sendDate +
-                ", arrived=" + arrived +
+                ", dateOfReading=" + dateOfReading +
                 ", author='" + author + '\'' +
                 '}';
     }

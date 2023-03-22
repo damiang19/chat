@@ -1,6 +1,5 @@
 package com.dagoreca.chat.controller;
 
-import com.dagoreca.chat.domain.Conversation;
 import com.dagoreca.chat.domain.User;
 import com.dagoreca.chat.service.ConversationService;
 import com.dagoreca.chat.service.UserService;
@@ -8,12 +7,9 @@ import com.dagoreca.chat.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;

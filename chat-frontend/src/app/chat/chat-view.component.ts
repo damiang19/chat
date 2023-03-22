@@ -100,7 +100,8 @@ sendMessage(content : string){
 prepareMessageToSend(content : string){
   this.messageRequest.content = content;
   this.messageRequest.conversationId = this.conversation.id;
-  this.messageRequest.receiver = this.currentUser;
+  this.messageRequest.author = this.currentUser;
+
 }
 
 ngAfterViewChecked() {        

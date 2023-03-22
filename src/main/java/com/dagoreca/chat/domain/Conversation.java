@@ -25,6 +25,7 @@ public class Conversation {
 
     private Boolean isGroupConversation;
 
+
     public Conversation() {
     }
 

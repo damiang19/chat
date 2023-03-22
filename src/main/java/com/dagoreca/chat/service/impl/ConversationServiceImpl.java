@@ -56,7 +56,8 @@ public class ConversationServiceImpl implements ConversationService {
         MessagesDTO messagesDTO = new MessagesDTO();
         messagesDTO.setSendDate(Instant.now());
         messagesDTO.setContent(messageRequestDTO.getContent());
-       actualConversation.addMessages(messagesDTO);
+        messagesDTO.setAuthor(messageRequestDTO.getAuthor());
+        actualConversation.addMessages(messagesDTO);
        conversationRepository.save(actualConversation);
        return conversationMapper.toDto(actualConversation);
     }
