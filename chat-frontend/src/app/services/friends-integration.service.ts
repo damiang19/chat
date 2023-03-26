@@ -19,6 +19,10 @@ export class FriendsIntegrationService {
     public getFriends(): Observable<HttpResponse<User[]>> {
         return this.httpClient.get<User[]>(API_URL+'/friends',{observe:'response'})
     }
+
+    public getFriendsInvitations(): Observable<HttpResponse<User[]>> {
+        return this.httpClient.get<User[]>(API_URL+'/friends-invitations',{observe:'response'})
+    }
       
     public getConversation(friendLogin: string): Observable<HttpResponse<Conversation>> {
         return this.httpClient.get<Conversation>(API_URL+'/friend/conversation',{observe:'response', params:{'friendLogin': friendLogin}})
@@ -28,6 +32,9 @@ export class FriendsIntegrationService {
         return this.httpClient.put(API_URL+'/send-friend-invitation', {}, {observe:'response',params:{'login': login}})
     }
 
-d
+    public acceptFriendInvitations(login: string): Observable<HttpResponseBase> {
+        return this.httpClient.put(API_URL+'/accept-friend-invitation', {}, {observe:'response',params:{'login': login}})
+    }
+
 
 }

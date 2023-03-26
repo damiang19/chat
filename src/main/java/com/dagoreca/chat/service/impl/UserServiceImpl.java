@@ -51,6 +51,16 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(user);
     }
 
+    public UserDTO updateAccountInformation(UserDTO userDTO){
+       UserDTO userToUpdate = findOne(userDTO.getLogin());
+       userToUpdate.setFirstName(userDTO.getFirstName());
+       userToUpdate.setLastName(userDTO.getLastName());
+       userToUpdate.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+       User user =  userMapper.toEntity(userToUpdate);
+       userRepository.save(user);
+       return userDTO;
+    }
+
     @Override
     public void deleteById(Long id) {
         if (userRepository.existsById(id)) {

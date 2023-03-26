@@ -62,4 +62,13 @@ public class FriendsIntegrationServiceImpl implements FriendsIntegrationService 
         List<User> friends = mongoTemplate.find(query, User.class);
         return userMapper.toDto(friends);
     }
+    @Override
+    public List<UserDTO> getFriendInvitationsList() {
+        UserDTO currentUser =  userService.getCurrentUser();
+        Query query = new Query();
+        query.addCriteria(Criteria.where("login").in(currentUser.getFriendInvitations()));
+        List<User> friends = mongoTemplate.find(query, User.class);
+        return userMapper.toDto(friends);
+    }
+
 }

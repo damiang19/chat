@@ -13,9 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.junit.runner.RunWith;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -52,10 +50,13 @@ public class UserControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(user)))
                 .andExpect(status().isCreated());
+
+        Optional<User> optionalUser  = userRepository.findByLogin("admin");
+        assertThat(optionalUser.isPresent());
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(roles = "ADMIN")
     public void testTakeUsers() throws Exception {
         userMockMvc.perform(get("/users").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
