@@ -1,6 +1,7 @@
 package com.dagoreca.chat.service.impl;
 
 import com.dagoreca.chat.domain.User;
+import com.dagoreca.chat.domain.enums.Roles;
 import com.dagoreca.chat.repository.UserRepository;
 import com.dagoreca.chat.service.UserService;
 import com.dagoreca.chat.service.dto.UserDTO;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +42,9 @@ public class UserServiceImpl implements UserService {
         logger.info("Creating new user with login: {}", userDTO.getLogin());
         userDTO.setId(sequenceGeneratorService.generateSequence(User.SEQUENCE_NAME));
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        userDTO.addRoles(Roles.ROLE_USER.getValue());
+        userDTO.setFriends(new ArrayList<>());
+        userDTO.setFriendInvitations(new ArrayList<>());
         return userRepository.save(userMapper.toEntity(userDTO));
     }
 

@@ -27,7 +27,7 @@ export class RegistrationComponent implements OnInit {
   } 
 
   registerNewUser() : void {
-    this.userService.registerUser(this.createFromForm()).subscribe();
+    this.userService.registerUser(this.createFromForm()).subscribe(()=> this.router.navigate(['/']));
   }
 
   private createFromForm(): User {

@@ -50,6 +50,7 @@ public class FriendsIntegrationServiceImpl implements FriendsIntegrationService 
                     actuallyLoggedUser.getFriendInvitations().remove(user);
                     userService.updateUser(actuallyLoggedUser);
                     invitingUser.addFriends(actuallyLoggedUser.getLogin());
+                    userService.updateUser(invitingUser);
                     conversationService.createConversation(List.of(actuallyLoggedUser.getLogin(),login));
                 });
     }
