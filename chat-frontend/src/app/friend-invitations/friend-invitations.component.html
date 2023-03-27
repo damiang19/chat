@@ -1,3 +1,12 @@
-<p>
-  friend-invitations works!
-</p>
+
+<div class="row pt-4" *ngFor="let user of invitingFriends">
+  <div class="col-1 d-flex justify-content-center">
+    <img src="/assets/images/user-avatar.png" alt="Girl in a jacket"  width="80" height="80">
+  </div>
+  <div class="col-1">
+    <span>{{user.firstName + " "+ user.lastName}}</span>
+  </div>
+  <div class="col-1">
+    <button type="button" style="width:100%" (click)="acceptInvitationToFriend(user.login)" class="btn btn-danger">Przyjmij zaproszenie do znajomych</button>
+  </div>
+</div>

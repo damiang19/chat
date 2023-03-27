@@ -55,7 +55,9 @@ public class UserServiceImpl implements UserService {
        UserDTO userToUpdate = findOne(userDTO.getLogin());
        userToUpdate.setFirstName(userDTO.getFirstName());
        userToUpdate.setLastName(userDTO.getLastName());
-       userToUpdate.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+       if(userDTO.getPassword() != userToUpdate.getPassword()){
+           userToUpdate.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+       }
        User user =  userMapper.toEntity(userToUpdate);
        userRepository.save(user);
        return userDTO;

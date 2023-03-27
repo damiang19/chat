@@ -42,16 +42,32 @@ public class UserControllerIT {
     @WithMockUser
     public void testRegister() throws Exception {
         UserDTO user = new UserDTO();
-        user.setLogin("admin");
-        user.setPassword("admin");
-        user.setFirstName("admin");
+        user.setLogin("test_user");
+        user.setPassword("test_user");
+        user.setFirstName("test_user");
 
         userMockMvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(user)))
                 .andExpect(status().isCreated());
 
-        Optional<User> optionalUser  = userRepository.findByLogin("admin");
+        Optional<User> optionalUser  = userRepository.findByLogin("test_user");
+        assertThat(optionalUser.isPresent());
+    }
+
+    @Test
+    @WithMockUser
+    public void updateRegisteredUser() throws Exception {
+        UserDTO user = new UserDTO();
+        user.setPassword("t");
+        user.setFirstName("test_user");
+
+        userMockMvc.perform(put("/update")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(user)))
+                .andExpect(status().isCreated());
+
+        Optional<User> optionalUser  = userRepository.findByLogin("test_user");
         assertThat(optionalUser.isPresent());
     }
 

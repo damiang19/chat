@@ -17,7 +17,6 @@ public class User implements Principal {
     public static final String SEQUENCE_NAME = "users_sequence";
 
     @Id
-    @JsonIgnore
     private Long id;
     @Indexed(unique = true)
     private String login;
