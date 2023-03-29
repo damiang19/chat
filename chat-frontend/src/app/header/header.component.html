@@ -13,7 +13,9 @@
         </div>
         <div *ngIf="isLoggedIn">
             <button type="button" routerLink="/search-for-friends"  class="btn btn-danger">Wyszukaj znajomych</button>
+            <button type="button" routerLink="/friend-invitations"  class="btn btn-danger">Zaproszenia do znajomych</button>
             <button type="button" routerLink="/chat"   class="btn btn-danger">Czat</button>
+            <button type="button" routerLink="/account-information"  class="btn btn-danger">Edycja profilu</button>
             <button type="button" (click)="logout()"  class="btn btn-danger">Wyloguj</button>
         </div> 
     </div>

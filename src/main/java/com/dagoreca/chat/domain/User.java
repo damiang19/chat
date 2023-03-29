@@ -17,9 +17,7 @@ public class User implements Principal {
     public static final String SEQUENCE_NAME = "users_sequence";
 
     @Id
-    @JsonIgnore
     private Long id;
-    private String email;
     @Indexed(unique = true)
     private String login;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -97,13 +95,6 @@ public class User implements Principal {
         this.friendInvitations = friendInvitations;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public void addFriendInvitations(String login) {
         if (friendInvitations == null) {

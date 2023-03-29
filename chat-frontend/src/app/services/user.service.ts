@@ -18,4 +18,8 @@ export class UserService {
     public getCurrentUser(): Observable<HttpResponse<User>> {
         return this.httpClient.get<User>(API_URL+'/current-user',{observe:'response'})
     }
+
+    public updateUser(user: User): Observable<HttpResponse<User>> {
+        return this.httpClient.put<User>(API_URL+'/update-user', user, {observe:'response'})
+    }
 }

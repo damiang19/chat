@@ -9,4 +9,5 @@ public interface FriendsIntegrationService {
     void sendFriendInvitation(String login);
     void acceptInvitationToFriend(String login);
     List<UserDTO> getFriendsList();
+     List<UserDTO> getFriendInvitationsList();
 }
