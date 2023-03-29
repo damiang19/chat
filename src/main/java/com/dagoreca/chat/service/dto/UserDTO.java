@@ -11,7 +11,6 @@ import java.util.*;
 
 public class UserDTO implements Serializable {
 
-    @JsonIgnore
     private Long id;
 
     private String login;

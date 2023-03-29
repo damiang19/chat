@@ -24,6 +24,6 @@ export class UserService {
     }
 
     public deleteAccount(id: number): Observable<HttpResponse<HttpResponseBase>> {
-        return this.httpClient.delete<HttpResponseBase>(API_URL +'/update-user/' + id, {observe:'response'})
+        return this.httpClient.delete<HttpResponseBase>(API_URL +'/users/' + id, {observe:'response'})
     }
 }

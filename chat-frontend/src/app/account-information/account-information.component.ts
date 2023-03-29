@@ -34,6 +34,8 @@ export class AccountInformationComponent implements OnInit {
 
   deleteAccount(): void {
       this.userService.deleteAccount(this.currentUser.id).subscribe();
+      localStorage.removeItem('token');
+      this.router.navigate(['/'])
   }
 
   private patchForm(): void {
