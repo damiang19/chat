@@ -5,6 +5,7 @@ import com.dagoreca.chat.service.ConversationService;
 import com.dagoreca.chat.service.FriendsIntegrationService;
 import com.dagoreca.chat.service.UserService;
 import com.dagoreca.chat.service.dto.ConversationDTO;
+import com.dagoreca.chat.service.dto.MessagesDTO;
 import com.dagoreca.chat.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,4 +69,9 @@ public class FriendsIntegrationController {
         List<UserDTO> userDTOList =  userService.findAllByLogin(login);
         return ResponseEntity.ok().body(userDTOList);
     }
+
+//    @PutMapping(value = "/update-readed-messages")
+//    public ResponseEntity<Void> updateReadedMessages(List<MessagesDTO> unreadedMessages){
+//
+//    }
 }

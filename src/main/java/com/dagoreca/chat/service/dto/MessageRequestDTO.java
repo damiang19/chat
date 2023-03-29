@@ -4,7 +4,7 @@ public class MessageRequestDTO {
 
     private Long conversationId;
     private String content;
-    private String receiver;
+    private String author;
 
     public MessageRequestDTO() {
     }
@@ -25,12 +25,12 @@ public class MessageRequestDTO {
         this.content = content;
     }
 
-    public String getReceiver() {
-        return receiver;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class MessageRequestDTO {
         return "MessageRequestDTO{" +
                 "conversationId=" + conversationId +
                 ", content='" + content + '\'' +
-                ", receiver='" + receiver + '\'' +
+                ", author='" + author + '\'' +
                 '}';
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -39,6 +40,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createNewUser(UserDTO userDTO) {
+        Optional<User> optionalUser = userRepository.findByLogin(userDTO.getLogin());
+        if(optionalUser.isPresent()){
+            throw new RuntimeException();
+        }
         logger.info("Creating new user with login: {}", userDTO.getLogin());
         userDTO.setId(sequenceGeneratorService.generateSequence(User.SEQUENCE_NAME));
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -60,7 +65,7 @@ public class UserServiceImpl implements UserService {
        UserDTO userToUpdate = findOne(userDTO.getLogin());
        userToUpdate.setFirstName(userDTO.getFirstName());
        userToUpdate.setLastName(userDTO.getLastName());
-       if(userDTO.getPassword() != userToUpdate.getPassword()){
+       if(!Objects.equals(userDTO.getPassword(), userToUpdate.getPassword())){
            userToUpdate.setPassword(passwordEncoder.encode(userDTO.getPassword()));
        }
        User user =  userMapper.toEntity(userToUpdate);

@@ -8,8 +8,10 @@
       </div>
     </div>
     <div class="col-10 bg-white row d-flex justify-content-center overflow-auto"  style="height: 750px; max-height: 750px; overflow: scroll; height: xyz;" #scrollMe>
-      <div *ngFor="let message of conversation.messages; index as i" class="d-flex justify-content-center">  
-        <span class="w-100 p-3" [style.background-color]="colourConversation(i)">{{message.content}}</span>
+      <div *ngFor="let message of conversation.messages; index as i" class="d-flex justify-content-center position-relative" [style.background-color]="colourConversation(i)">  
+        <span class=" pt-5 w-100" >{{message.content}}</span>
+        <span class=" position-absolute top-0 start-0" id="author" [style.background-color]="colourConversation(i)">Autor wiadomości : {{message.author}}</span>
+        <span class="p-2 d-flex justify-content-end" [style.background-color]="colourConversation(i)">Data wysłania: {{message.sendDate | date : 'short'}}</span>
       </div>
     </div>
     <div class="col-2"></div>

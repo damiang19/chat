@@ -1,13 +1,13 @@
 export interface IMessageRequest {
     content: string;
-    receiver: string;
+    author: string;
     conversationId: number;
 }
 
 
 export class MessageRequest implements IMessageRequest{
     public content: string;
-    public receiver: string;
+    public author: string;
     public conversationId: number;
     constructor(){}
 }
