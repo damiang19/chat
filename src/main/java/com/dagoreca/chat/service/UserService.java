@@ -13,6 +13,8 @@ public interface UserService {
 
     UserDTO updateUser(UserDTO userDTO);
 
+    UserDTO updateAccountInformation(UserDTO userDTO);
+
     void deleteById(Long id);
 
     UserDTO findOne(Long id);

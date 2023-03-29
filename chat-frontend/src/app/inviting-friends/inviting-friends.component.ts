@@ -34,8 +34,11 @@ export class InvitingFriendsComponent implements OnInit {
   }
 
   showSendFriendInvitationButton(login : string) : boolean {
-    const friendsList = this.currentUser.friends.findIndex(element => element == login);
-    if(friendsList === -1){
+    if(!this.currentUser.friends){
+      return true;
+    }
+    const existOnFriendsList = this.currentUser.friends.findIndex(element => element == login);
+    if(existOnFriendsList === -1){
       return true;
     }else {
       return false

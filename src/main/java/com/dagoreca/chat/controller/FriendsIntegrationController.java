@@ -49,6 +49,13 @@ public class FriendsIntegrationController {
         return ResponseEntity.ok().body(friends);
     }
 
+    @GetMapping(value = "/friends-invitations")
+    public ResponseEntity<List<UserDTO>> getFriendInvitations() {
+        logger.debug("REST request to get friends list ");
+        List<UserDTO> friends = friendsIntegrationService.getFriendInvitationsList();
+        return ResponseEntity.ok().body(friends);
+    }
+
     @GetMapping(value = "/friend/conversation")
     public ResponseEntity<ConversationDTO> getConversation(@RequestParam String friendLogin) {
         ConversationDTO conversationDTO = conversationService.getConversation(friendLogin);

@@ -11,15 +11,19 @@ import { HeaderComponent } from './header/header.component';
 import { ChatViewComponent } from './chat/chat-view.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { InvitingFriendsComponent } from './inviting-friends/inviting-friends.component';
+import { FriendInvitationsComponent } from './friend-invitations/friend-invitations.component';
+import { AccountInformationComponent } from './account-information/account-information.component';
 
 @NgModule({
-  declarations: [		
+  declarations: [				
     AppComponent,
     LoginComponent,
     ChatViewComponent,
     HeaderComponent,
     RegistrationComponent,
-    InvitingFriendsComponent
+    InvitingFriendsComponent,
+      FriendInvitationsComponent,
+      AccountInformationComponent
    ],
   imports: [
     BrowserModule,
