@@ -27,8 +27,9 @@
       <input type="text" formControlName="lastName" class="form-control" id="lastName" placeholder="Last name">
     </div>
     <small class="form=text text=danger" *ngIf="registrationForm.get('lastName')?.errors?.required">This field is required</small>
-
-
+<div>
+  <button (click)="deleteAccount()" class=" btn btn-danger btn-lg" >Usuń konto</button>
+</div>
       <button type="submit" [disabled]="registrationForm.invalid" class="form-control btn btn-outline-primary btn-sm " >Zapisz zmiany</button>
   </form>
 </div>

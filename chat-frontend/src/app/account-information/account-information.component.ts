@@ -32,6 +32,10 @@ export class AccountInformationComponent implements OnInit {
       this.userService.updateUser(this.createFromForm()).subscribe()
   }
 
+  deleteAccount(): void {
+      this.userService.deleteAccount(this.currentUser.id).subscribe();
+  }
+
   private patchForm(): void {
   this.registrationForm.patchValue({
     login: this.currentUser.login,
@@ -47,8 +51,8 @@ export class AccountInformationComponent implements OnInit {
       firstName: this.registrationForm.get(['firstName'])!.value,
       lastName: this.registrationForm.get(['lastName'])!.value,
       password: this.currentUser.password,
-
     }
+
   }
 
 }

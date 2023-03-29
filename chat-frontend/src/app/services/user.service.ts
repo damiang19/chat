@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams, HttpResponse } from "@angular/common/http";
+import { HttpClient, HttpParams, HttpResponse, HttpResponseBase } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { User } from "../models/user";
@@ -21,5 +21,9 @@ export class UserService {
 
     public updateUser(user: User): Observable<HttpResponse<User>> {
         return this.httpClient.put<User>(API_URL+'/update-user', user, {observe:'response'})
+    }
+
+    public deleteAccount(id: number): Observable<HttpResponse<HttpResponseBase>> {
+        return this.httpClient.delete<HttpResponseBase>(API_URL +'/update-user/' + id, {observe:'response'})
     }
 }
