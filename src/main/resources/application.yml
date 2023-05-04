@@ -24,3 +24,4 @@ spring:
     host: localhost
     authentication-database: admin
 jwt.secret : hahaha
+server.error.include-message: always

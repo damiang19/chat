@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     public User createNewUser(UserDTO userDTO) {
         Optional<User> optionalUser = userRepository.findByLogin(userDTO.getLogin());
         if(optionalUser.isPresent()){
-            throw new RuntimeException();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Podany login jest już zajęty");
         }
         logger.info("Creating new user with login: {}", userDTO.getLogin());
         userDTO.setId(sequenceGeneratorService.generateSequence(User.SEQUENCE_NAME));
