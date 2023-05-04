@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -45,13 +47,14 @@ public class ConversationServiceImpl implements ConversationService {
     public ConversationDTO createConversation(List<String> usersList){
         ConversationDTO conversationDTO = new ConversationDTO();
         conversationDTO.setConversationMembers(usersList);
+        conversationDTO.setMessages(new ArrayList<>());
         conversationDTO.setId(sequenceGeneratorService.generateSequence(Conversation.SEQUENCE_NAME));
         Conversation conversation = conversationMapper.toEntity(conversationDTO);
         conversationRepository.save(conversation);
         return conversationMapper.toDto(conversation);
     }
     @Override
-    public ConversationDTO updateConversation(MessageRequestDTO messageRequestDTO){
+    public MessagesDTO updateConversation(MessageRequestDTO messageRequestDTO){
        Conversation actualConversation = conversationRepository.findById(messageRequestDTO.getConversationId()).orElseThrow(RuntimeException::new);
         MessagesDTO messagesDTO = new MessagesDTO();
         messagesDTO.setSendDate(Instant.now());
@@ -59,14 +62,19 @@ public class ConversationServiceImpl implements ConversationService {
         messagesDTO.setAuthor(messageRequestDTO.getAuthor());
         actualConversation.addMessages(messagesDTO);
        conversationRepository.save(actualConversation);
-       return conversationMapper.toDto(actualConversation);
+       return messagesDTO;
     }
 
     @Override
     public ConversationDTO getConversation(String friendLogin) {
         String currentUser =  userService.getCurrentUser().getLogin();
         Query query = new Query();
-        query.addCriteria(Criteria.where("conversationMembers").in(currentUser,friendLogin));
+        Criteria criteria = new Criteria();
+        criteria.andOperator(Criteria.where("conversationMembers").in(friendLogin),Criteria.where("conversationMembers").in(currentUser));
+        query.addCriteria(criteria);
+        Query f = Query.query(Criteria.where("friends").elemMatch(
+                Criteria.where("$elemMatch").is(Arrays.asList("John", "Doe"))
+        ));
         return conversationMapper.toDto(mongoTemplate.findOne(query, Conversation.class));
     }
 

@@ -17,7 +17,7 @@ export class RegistrationComponent implements OnInit {
       this.registrationForm = this.fb.group({
         login: [null,[Validators.required, Validators.minLength(6)]],
         firstName: [null,[Validators.required]],
-        password: [null,[Validators.required, Validators.minLength(6)]],
+        password: [,[Validators.required, Validators.minLength(6)]],
         lastName: [null,[Validators.required]],
         email: [null,[Validators.required]]
       })
@@ -27,7 +27,13 @@ export class RegistrationComponent implements OnInit {
   } 
 
   registerNewUser() : void {
-    this.userService.registerUser(this.createFromForm()).subscribe(()=> this.router.navigate(['/']));
+    this.userService.registerUser(this.createFromForm()).subscribe(
+      ()=> this.router.navigate(['/']),
+      error => {
+        const formControl = this.registrationForm.get('login');
+        console.log(error)
+        formControl.setErrors({internalServerError : error.error.message})
+    });
   }
 
   private createFromForm(): User {

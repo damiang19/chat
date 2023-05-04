@@ -48,6 +48,7 @@ public class SecurityConfiguration {
                 .antMatchers("/getMessage").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
                 .antMatchers("/users").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
                 .antMatchers("/register").permitAll()
+                .antMatchers("/ws/users").permitAll()
                 .antMatchers("/current-user").hasAnyAuthority("ROLE_ADMIN","ROLE_USER")
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()

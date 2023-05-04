@@ -43,6 +43,9 @@ export class ChatViewComponent implements OnInit, AfterViewChecked  {
   }
 
   ngOnInit() {
+    this.userService.getCurrentUser().subscribe(response => {
+        this.currentUser = response.body.login;
+    })
     this.scrollToBottom();
     this.friendsIntegrationService.getFriends().subscribe(response => {
       this.userList = response.body;
@@ -50,11 +53,10 @@ export class ChatViewComponent implements OnInit, AfterViewChecked  {
   }
 
   colourConversation(index : number): string {
-    return index %2 == 0 ? 'white' : 'grey'
+    return index %2 == 0 ? 'yellow' : 'grey'
   }
 
   openConversation(friendLogin : string): void {
-    this.currentUser = friendLogin;
     this.friendsIntegrationService.getConversation(friendLogin).subscribe(response =>{
       this.conversation = response.body;
     },err =>{},() => { this.connect();})
@@ -67,7 +69,7 @@ const _this = this;
 this.stompClient.connect({username: this.conversation.id,}, function (frame) {
   _this.setConnected(true);
   _this.stompClient.subscribe('/users/topic/messages', function (hello) {
-    _this.showConversation(hello.body);
+    _this.showConversation(JSON.parse(hello.body));
   });
 });
 }
@@ -87,14 +89,13 @@ if (connected) {
 
 }
 showConversation(message : any) {
-  const n = new Messages();
-  n.content = message;
-  this.conversation.messages.push(n);
+  this.conversation.messages.push(message);
 }
 
-sendMessage(content : string){
-  this.prepareMessageToSend(content);
+sendMessage(content : any){
+  this.prepareMessageToSend(content.target.value);
   this.stompClient.send("/hello", {'Authorization':'Bearer'}, JSON.stringify(this.messageRequest));
+  content.target.value = '';
 }
 
 prepareMessageToSend(content : string){

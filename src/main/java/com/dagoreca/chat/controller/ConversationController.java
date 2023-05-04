@@ -2,25 +2,45 @@ package com.dagoreca.chat.controller;
 
 import com.dagoreca.chat.service.ConversationService;
 import com.dagoreca.chat.service.dto.MessageRequestDTO;
+import com.dagoreca.chat.service.dto.MessagesDTO;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
+import org.springframework.messaging.simp.user.SimpUser;
+import org.springframework.messaging.simp.user.SimpUserRegistry;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
 public class ConversationController {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final ConversationService conversationService;
 
-    public ConversationController(SimpMessagingTemplate simpMessagingTemplate, ConversationService conversationService) {
+    private final SimpUserRegistry simpUserRegistry;
+
+
+    public ConversationController(SimpMessagingTemplate simpMessagingTemplate, ConversationService conversationService, SimpUserRegistry simpUserRegistry) {
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.conversationService = conversationService;
+        this.simpUserRegistry = simpUserRegistry;
     }
 
     @MessageMapping("/hello")
-    public void send(SimpMessageHeaderAccessor sha, @Payload MessageRequestDTO messagesDTO) {
-        conversationService.updateConversation(messagesDTO);
-        simpMessagingTemplate.convertAndSendToUser(sha.getUser().getName(), "/topic/messages", messagesDTO.getContent());
+    public void send(SimpMessageHeaderAccessor sha, @Payload MessageRequestDTO messageRequestDTO) {
+        MessagesDTO messagesDTO = conversationService.updateConversation(messageRequestDTO);
+        simpMessagingTemplate.convertAndSendToUser(sha.getUser().getName(), "/topic/messages", messagesDTO);
+    }
+
+    @GetMapping("/ws/users")
+    public List<String> connectedEquipments() {
+        return this.simpUserRegistry
+                .getUsers()
+                .stream()
+                .map(SimpUser::getName)
+                .collect(Collectors.toList());
     }
 }

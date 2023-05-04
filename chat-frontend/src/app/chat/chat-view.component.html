@@ -1,24 +1,86 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Template</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Custom CSS -->
+  <style>
+     .chat-container {
+      height: 700px;
+      overflow-y: scroll;
+    }
+    .chat-message {
+      margin-bottom: 10px;
+    }
+    .chat-message .message-time {
+      font-size: 12px;
+      color: #777;
+    }
+    .chat-message .message-text {
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 70%;
+    }
+    .chat-message .message-text.sent {
+      background-color: #c7ecee;
+      color: #2d3436;
+      margin-left: auto;
+    }
+    .chat-message .message-text.received {
+      background-color: #dfe6e9;
+      color: #2d3436;
+      margin-right: auto;
+    }
+    .friends-list {
+      height: 700px;
+      overflow-y: scroll;
+    }
+    .friend-item {
+      cursor: pointer;
+    }
+    
+    .friend-item:active {
+      background-color: #e2e6ea;
+    }
+  </style>
+</head>
 
 
-  <div  class="row">
-    <div class="col-2 bg-light" style="height: 750px;">
-      <label class="d-flex justify-content-center">Lista znajomych</label>
-      <div *ngFor="let user of userList">
-        <button type="button" style="width:100%" (click)="openConversation(user.login)" class="btn btn-secondary btn-block">{{user.login}}</button>
+
+    <div class="container-fluid">
+      <div class="row mt-5">
+        <div class="col-md-3">
+          <div class="card friends-list">
+            <div class="card-header">Friends</div>
+            <ul class="list-group list-group-flush"  *ngFor="let user of userList">
+              <li class="list-group-item friend-item  bg-warning" (click)="openConversation(user.login)">{{user.login}}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-header">Chat</div>
+            <div class="card-body chat-container"  #scrollMe>
+              <div class="chat-message" *ngFor="let message of conversation.messages">
+                <div class="message-time">{{message.sendDate}}</div>
+                <div class="message-time">{{message.author}}</div>
+                <div class="message-text received">{{message.content}}</div>
+              </div>
+     
+              <!-- More messages here -->
+            </div>
+            <div class="card-footer">
+              <div class="input-group">
+                <input type="text" class="form-control" (keyup.enter)="sendMessage($event)" placeholder="Type your message">
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="button" >Send</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col-10 bg-white row d-flex justify-content-center overflow-auto"  style="height: 750px; max-height: 750px; overflow: scroll; height: xyz;" #scrollMe>
-      <div *ngFor="let message of conversation.messages; index as i" class="d-flex justify-content-center position-relative" [style.background-color]="colourConversation(i)">  
-        <span class=" pt-5 w-100" >{{message.content}}</span>
-        <span class=" position-absolute top-0 start-0" id="author" [style.background-color]="colourConversation(i)">Autor wiadomości : {{message.author}}</span>
-        <span class="p-2 d-flex justify-content-end" [style.background-color]="colourConversation(i)">Data wysłania: {{message.sendDate | date : 'short'}}</span>
-      </div>
-    </div>
-    <div class="col-2"></div>
-      <div class="col-10">
-        <textarea class="form-control" aria-label="With textarea"  (keyup.enter)="sendMessage($event.target.value)"></textarea>
-      </div>
-  
-  </div>
   
 
