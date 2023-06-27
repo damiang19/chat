@@ -9,7 +9,7 @@ import java.util.List;
 public interface ConversationService {
     ConversationDTO createConversation(List<String> userList);
 
-    MessagesDTO updateConversation(MessageRequestDTO messageRequestDTO);
+    MessageRequestDTO updateConversation(MessageRequestDTO messageRequestDTO);
 
     ConversationDTO getConversation(String login);
 }

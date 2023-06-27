@@ -2,14 +2,10 @@ import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@ang
 import { CompatClient, Stomp } from '@stomp/stompjs';
 import { WebSocketService } from '../services/WebSocket.service';
 import * as SockJS from 'sockjs-client';
-import jwt_decode, { JwtDecodeOptions } from 'jwt-decode'
-import { JwtService } from '../services/jwt.service';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user';
 import { Conversation } from '../models/conversation';
 import { MessageRequest } from '../models/message-request';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
-import { Messages } from '../models/messages';
 import { FriendsIntegrationService } from '../services/friends-integration.service';
 
 @Component({
@@ -20,7 +16,6 @@ import { FriendsIntegrationService } from '../services/friends-integration.servi
 export class ChatViewComponent implements OnInit, AfterViewChecked  {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
-
   name : string;
   message : string;
   currentUser: string;
@@ -30,7 +25,6 @@ export class ChatViewComponent implements OnInit, AfterViewChecked  {
   messageRequest: MessageRequest;
   
   constructor( private ws : WebSocketService,private userService : UserService, private friendsIntegrationService : FriendsIntegrationService) { 
-    this.name = '';
     this.message = '';
     this.userList = [];
     this.currentUser = '';
@@ -38,14 +32,12 @@ export class ChatViewComponent implements OnInit, AfterViewChecked  {
     this.conversation = new Conversation();
     this.conversation.messages = [];
     this.messageRequest = new MessageRequest()
-    const key = jwt_decode(localStorage.getItem(JwtService.TOKEN_STORAGE_KEY));
-    this.name = key['sub'];
   }
 
   ngOnInit() {
     this.userService.getCurrentUser().subscribe(response => {
         this.currentUser = response.body.login;
-    })
+    },() => {}, () => this.connect())
     this.scrollToBottom();
     this.friendsIntegrationService.getFriends().subscribe(response => {
       this.userList = response.body;
@@ -59,14 +51,14 @@ export class ChatViewComponent implements OnInit, AfterViewChecked  {
   openConversation(friendLogin : string): void {
     this.friendsIntegrationService.getConversation(friendLogin).subscribe(response =>{
       this.conversation = response.body;
-    },err =>{},() => { this.connect();})
+    })
   }
 
 connect() {
 const socket = new SockJS('http://localhost:8080/websocket/yol');
 this.stompClient = Stomp.over(socket);
 const _this = this;
-this.stompClient.connect({username: this.conversation.id,}, function (frame) {
+this.stompClient.connect({ username : this.currentUser}, function (frame) {
   _this.setConnected(true);
   _this.stompClient.subscribe('/users/topic/messages', function (hello) {
     _this.showConversation(JSON.parse(hello.body));
@@ -89,7 +81,11 @@ if (connected) {
 
 }
 showConversation(message : any) {
-  this.conversation.messages.push(message);
+  if(message.conversationId === this.conversation.id){
+    this.conversation.messages.push(message);
+  } else {
+    
+  }
 }
 
 sendMessage(content : any){
