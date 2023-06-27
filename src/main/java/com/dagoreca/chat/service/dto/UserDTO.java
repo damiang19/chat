@@ -1,11 +1,7 @@
 package com.dagoreca.chat.service.dto;
 
 
-import com.dagoreca.chat.domain.User;
 import com.dagoreca.chat.domain.enums.Roles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
 import java.util.*;
 

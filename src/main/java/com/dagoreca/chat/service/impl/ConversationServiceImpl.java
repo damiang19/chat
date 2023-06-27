@@ -54,15 +54,18 @@ public class ConversationServiceImpl implements ConversationService {
         return conversationMapper.toDto(conversation);
     }
     @Override
-    public MessagesDTO updateConversation(MessageRequestDTO messageRequestDTO){
+    public MessageRequestDTO updateConversation(MessageRequestDTO messageRequestDTO){
        Conversation actualConversation = conversationRepository.findById(messageRequestDTO.getConversationId()).orElseThrow(RuntimeException::new);
-        MessagesDTO messagesDTO = new MessagesDTO();
-        messagesDTO.setSendDate(Instant.now());
+       Instant actualDate = Instant.now();
+       messageRequestDTO.setSendDate(actualDate);
+       messageRequestDTO.setReceivers(actualConversation.getConversationMembers());
+       MessagesDTO messagesDTO = new MessagesDTO();
+        messagesDTO.setSendDate(actualDate);
         messagesDTO.setContent(messageRequestDTO.getContent());
         messagesDTO.setAuthor(messageRequestDTO.getAuthor());
         actualConversation.addMessages(messagesDTO);
        conversationRepository.save(actualConversation);
-       return messagesDTO;
+       return messageRequestDTO;
     }
 
     @Override

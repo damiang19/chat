@@ -2,7 +2,7 @@ package com.dagoreca.chat.controller;
 
 import com.dagoreca.chat.service.ConversationService;
 import com.dagoreca.chat.service.dto.MessageRequestDTO;
-import com.dagoreca.chat.service.dto.MessagesDTO;
+import org.springframework.http.MediaType;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -12,6 +12,8 @@ import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,8 +33,10 @@ public class ConversationController {
 
     @MessageMapping("/hello")
     public void send(SimpMessageHeaderAccessor sha, @Payload MessageRequestDTO messageRequestDTO) {
-        MessagesDTO messagesDTO = conversationService.updateConversation(messageRequestDTO);
-        simpMessagingTemplate.convertAndSendToUser(sha.getUser().getName(), "/topic/messages", messagesDTO);
+        messageRequestDTO = conversationService.updateConversation(messageRequestDTO);
+        for(String userLogin : messageRequestDTO.getReceivers()){
+            simpMessagingTemplate.convertAndSendToUser(userLogin, "/topic/messages", messageRequestDTO);
+        }
     }
 
     @GetMapping("/ws/users")
