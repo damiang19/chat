@@ -9,7 +9,12 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.user.SimpUser;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +38,13 @@ public class ConversationController {
         for(String userLogin : messageRequestDTO.getReceivers()){
             simpMessagingTemplate.convertAndSendToUser(userLogin, "/topic/messages", messageRequestDTO);
         }
+    }
+
+    @PostMapping("/photos/add")
+    public String addPhoto(@RequestParam("file") MultipartFile file) throws IOException {
+        MessageRequestDTO messageRequestDTO = new MessageRequestDTO();
+
+        return null;
     }
 
     @GetMapping("/ws/users")

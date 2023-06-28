@@ -1,5 +1,7 @@
 package com.dagoreca.chat.service.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
@@ -10,7 +12,7 @@ public class MessageRequestDTO {
     private String content;
     private String author;
     private Instant sendDate;
-
+    private MultipartFile messageFile;
     private List<String> receivers;
 
     public MessageRequestDTO() {
@@ -56,17 +58,25 @@ public class MessageRequestDTO {
         this.receivers = receivers;
     }
 
+    public MultipartFile getMessageFile() {
+        return messageFile;
+    }
+
+    public void setMessageFile(MultipartFile messageFile) {
+        this.messageFile = messageFile;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MessageRequestDTO that = (MessageRequestDTO) o;
-        return Objects.equals(conversationId, that.conversationId) && Objects.equals(content, that.content) && Objects.equals(author, that.author) && Objects.equals(sendDate, that.sendDate);
+        return Objects.equals(conversationId, that.conversationId) && Objects.equals(content, that.content) && Objects.equals(author, that.author) && Objects.equals(sendDate, that.sendDate) && Objects.equals(messageFile, that.messageFile) && Objects.equals(receivers, that.receivers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(conversationId, content, author, sendDate);
+        return Objects.hash(conversationId, content, author, sendDate, messageFile, receivers);
     }
 
     @Override
@@ -76,6 +86,8 @@ public class MessageRequestDTO {
                 ", content='" + content + '\'' +
                 ", author='" + author + '\'' +
                 ", sendDate=" + sendDate +
+                ", messageFile=" + messageFile +
+                ", receivers=" + receivers +
                 '}';
     }
 }

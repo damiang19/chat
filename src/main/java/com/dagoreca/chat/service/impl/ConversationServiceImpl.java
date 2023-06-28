@@ -6,18 +6,22 @@ import com.dagoreca.chat.repository.ConversationRepository;
 import com.dagoreca.chat.service.ConversationService;
 import com.dagoreca.chat.service.UserService;
 import com.dagoreca.chat.service.dto.ConversationDTO;
+import com.dagoreca.chat.service.dto.MessageFileDTO;
 import com.dagoreca.chat.service.dto.MessageRequestDTO;
 import com.dagoreca.chat.service.dto.MessagesDTO;
 import com.dagoreca.chat.service.mapper.ConversationMapper;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -54,30 +58,49 @@ public class ConversationServiceImpl implements ConversationService {
     }
     @Override
     public MessageRequestDTO updateConversation(MessageRequestDTO messageRequestDTO){
-       Conversation actualConversation = conversationRepository.findById(messageRequestDTO.getConversationId()).orElseThrow(RuntimeException::new);
+       Conversation actualConversation = conversationRepository
+               .findById(messageRequestDTO.getConversationId()).orElseThrow(RuntimeException::new);
        Instant actualDate = Instant.now();
+
        messageRequestDTO.setSendDate(actualDate);
        messageRequestDTO.setReceivers(actualConversation.getConversationMembers());
+
        MessagesDTO messagesDTO = new MessagesDTO();
-        messagesDTO.setSendDate(actualDate);
-        messagesDTO.setContent(messageRequestDTO.getContent());
-        messagesDTO.setAuthor(messageRequestDTO.getAuthor());
-        actualConversation.addMessages(messagesDTO);
+       messagesDTO.setSendDate(actualDate);
+       messagesDTO.setContent(messageRequestDTO.getContent());
+       messagesDTO.setAuthor(messageRequestDTO.getAuthor());
+
+
+       messagesDTO.setMessageFile(addFile(messageRequestDTO.getMessageFile()));
+       actualConversation.addMessages(messagesDTO);
        conversationRepository.save(actualConversation);
+
        return messageRequestDTO;
     }
 
     @Override
     public ConversationDTO getConversation(String friendLogin) {
         String currentUser =  userService.getCurrentUser().getLogin();
+        Query query = getActualConversationQuery(friendLogin, currentUser);
+        return conversationMapper.toDto(mongoTemplate.findOne(query, Conversation.class));
+    }
+
+    private Query getActualConversationQuery(String friendLogin, String currentUserLogin){
         Query query = new Query();
         Criteria criteria = new Criteria();
-        criteria.andOperator(Criteria.where("conversationMembers").in(friendLogin),Criteria.where("conversationMembers").in(currentUser));
+        criteria.andOperator(Criteria.where("conversationMembers").in(friendLogin),Criteria.where("conversationMembers").in(currentUserLogin));
         query.addCriteria(criteria);
-        Query f = Query.query(Criteria.where("friends").elemMatch(
-                Criteria.where("$elemMatch").is(Arrays.asList("John", "Doe"))
-        ));
-        return conversationMapper.toDto(mongoTemplate.findOne(query, Conversation.class));
+        return query;
+    }
+
+    public MessageFileDTO addFile(MultipartFile file) {
+        MessageFileDTO messageFileDTO = new MessageFileDTO();
+        try {
+            messageFileDTO.setContent(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
+        } catch (IOException exception) {
+            System.out.println(exception.getMessage());
+        }
+        return messageFileDTO;
     }
 
 }
