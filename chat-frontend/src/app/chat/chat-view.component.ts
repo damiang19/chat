@@ -7,7 +7,6 @@ import { User } from '../models/user';
 import { Conversation } from '../models/conversation';
 import { MessageRequest } from '../models/message-request';
 import { FriendsIntegrationService } from '../services/friends-integration.service';
-import { MessageFile } from '../models/message-file';
 
 @Component({
   selector: 'chat-view',
@@ -18,6 +17,7 @@ export class ChatViewComponent implements OnInit, AfterViewChecked  {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   name : string;
+  file : File;
   message : string;
   currentUser: string;
   stompClient : CompatClient;
@@ -86,6 +86,7 @@ disconnect() {
 
 
 sendMessage(content : any){
+  this.sendFile();
   this.prepareMessageToSend(content.target.value);
   this.stompClient.send("/hello", {'Authorization':'Bearer'}, JSON.stringify(this.messageRequest));
   content.target.value = '';
@@ -110,9 +111,9 @@ fetchUserData() : void {
   },() => {}, () => this.connect());
  }
 
- sendFile(file : File) : void {
-    debugger;
-    this.friendsIntegrationService.sendFile(file).subscribe();
+ sendFile(file ?: File) : void {
+  debugger;
+    this.friendsIntegrationService.sendFile(file, this.conversation.id).subscribe();
  }
 
 }

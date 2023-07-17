@@ -36,14 +36,13 @@ export class FriendsIntegrationService {
         return this.httpClient.put(API_URL+'/accept-friend-invitation', {}, {observe:'response',params:{'login': login}})
     }
 
-    public sendFile(file : File) : Observable<HttpResponse<any>> {
+    public sendFile(file : File, conversationIdentity : number) : Observable<HttpResponse<any>> {
         const formdata: FormData = new FormData();  
-        var content = '<a id="a"><b id="b">hey!</b></a>'; // the body of the new file...
-        var blob = new Blob([content], { type: "text/xml"});
+        var blob = new Blob([file], { type: "text/xml"});
         formdata.set('file', blob);  
         const headers = new HttpHeaders()
         headers.set('Content-Type','multipart/form-data')
-        return this.httpClient.post<any>(API_URL+'/photos/add', formdata )
+        return this.httpClient.post<any>(API_URL+'/photos/add', formdata , {params:{'conversationIdentity': String(conversationIdentity)} })
     }
 
 

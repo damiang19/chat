@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum Roles {
     ROLE_ADMIN("ROLE_ADMIN"), ROLE_USER("ROLE_USER");
 
-    private String value;
+    private final String value;
     Roles(String value) {
         this.value = value;
     }

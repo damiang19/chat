@@ -1,7 +1,10 @@
 package com.dagoreca.chat.controller;
 
 import com.dagoreca.chat.service.ConversationService;
+import com.dagoreca.chat.service.dto.MessageFileDTO;
 import com.dagoreca.chat.service.dto.MessageRequestDTO;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -34,15 +37,18 @@ public class ConversationController {
 
     @MessageMapping("/hello")
     public void send(SimpMessageHeaderAccessor sha, @Payload MessageRequestDTO messageRequestDTO) {
-        messageRequestDTO = conversationService.updateConversation(messageRequestDTO);
+        messageRequestDTO = conversationService.handleMessage(messageRequestDTO);
         for(String userLogin : messageRequestDTO.getReceivers()){
             simpMessagingTemplate.convertAndSendToUser(userLogin, "/topic/messages", messageRequestDTO);
         }
     }
 
     @PostMapping("/photos/add")
-    public String addPhoto(@RequestParam("file") MultipartFile file) throws IOException {
+    public String addPhoto(@RequestParam("file") MultipartFile file, @RequestParam String conversationIdentity) throws IOException {
         MessageRequestDTO messageRequestDTO = new MessageRequestDTO();
+        MessageFileDTO messageFileDTO = new MessageFileDTO();
+        messageFileDTO.setTitle(file.getName());
+        messageFileDTO.setContent(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
 
         return null;
     }
