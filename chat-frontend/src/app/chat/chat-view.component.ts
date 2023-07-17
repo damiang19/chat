@@ -86,9 +86,8 @@ disconnect() {
 
 
 sendMessage(content : any){
-  this.sendFile();
   this.prepareMessageToSend(content.target.value);
-  this.stompClient.send("/hello", {'Authorization':'Bearer'}, JSON.stringify(this.messageRequest));
+  this.stompClient.send("/message-broker", {'Authorization':'Bearer'}, JSON.stringify(this.messageRequest));
   content.target.value = '';
 }
 

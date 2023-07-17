@@ -35,7 +35,7 @@ public class ConversationController {
         this.simpUserRegistry = simpUserRegistry;
     }
 
-    @MessageMapping("/hello")
+    @MessageMapping("/message-broker")
     public void send(SimpMessageHeaderAccessor sha, @Payload MessageRequestDTO messageRequestDTO) {
         messageRequestDTO = conversationService.handleMessage(messageRequestDTO);
         for(String userLogin : messageRequestDTO.getReceivers()){
