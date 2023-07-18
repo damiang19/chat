@@ -1,0 +1,13 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  mongodb:
+    embedded:
+      database: test
+      version: 3.4.11
+      username: user
+      password: user
+      authentication-database: admin
+      port: 0
+jwt.secret : haha
