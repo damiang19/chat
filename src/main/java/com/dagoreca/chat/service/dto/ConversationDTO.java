@@ -48,6 +48,13 @@ public class ConversationDTO implements Serializable {
         conversationMembers.add(user);
     }
 
+    public void addMessages(MessagesDTO messagesDTO) {
+        if (messages == null) {
+            messages = new ArrayList<>();
+        }
+        messages.add(messagesDTO);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

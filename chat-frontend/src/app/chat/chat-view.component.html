@@ -70,6 +70,8 @@
      
               <!-- More messages here -->
             </div>
+           <input type="file" name="image" [(ngModel)]="file" accept="image/*" />
+            <button (click)="sendFile(file)"></button> -->
             <div class="card-footer">
               <div class="input-group">
                 <input type="text" class="form-control" (keyup.enter)="sendMessage($event)" placeholder="Type your message">
