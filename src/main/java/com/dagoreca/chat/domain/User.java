@@ -4,6 +4,7 @@ import com.dagoreca.chat.domain.enums.Roles;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.security.Principal;
 import java.util.*;
@@ -26,9 +27,11 @@ public class User implements Principal {
     private List<String> friends;
     private List<String> friendInvitations;
 
+    private Boolean isEnabled;
     private Set<Roles> roles = new HashSet<>();
 
-    public User(){}
+    public User() {
+    }
 
     public Long getId() {
         return id;
@@ -38,7 +41,7 @@ public class User implements Principal {
         this.id = id;
     }
 
-    public User(String login){
+    public User(String login) {
         this.login = login;
     }
 
@@ -57,6 +60,7 @@ public class User implements Principal {
     public void setPassword(String password) {
         this.password = password;
     }
+
     @Override
     public String getName() {
         return login;
@@ -124,17 +128,25 @@ public class User implements Principal {
         this.roles = roles;
     }
 
+    public Boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(login, user.login) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(friends, user.friends) && Objects.equals(friendInvitations, user.friendInvitations);
+        return isEnabled == user.isEnabled && Objects.equals(id, user.id) && Objects.equals(login, user.login) && Objects.equals(password, user.password) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(friends, user.friends) && Objects.equals(friendInvitations, user.friendInvitations) && Objects.equals(roles, user.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, firstName, lastName, friends, friendInvitations);
+        return Objects.hash(id, login, password, firstName, lastName, friends, friendInvitations, isEnabled, roles);
     }
 
     @Override
@@ -147,6 +159,8 @@ public class User implements Principal {
                 ", lastName='" + lastName + '\'' +
                 ", friends=" + friends +
                 ", friendInvitations=" + friendInvitations +
+                ", isEnabled=" + isEnabled +
+                ", roles=" + roles +
                 '}';
     }
 }
