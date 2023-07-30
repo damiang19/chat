@@ -17,6 +17,7 @@ export class ChatViewComponent implements OnInit, AfterViewChecked  {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   name : string;
+  file : File;
   message : string;
   currentUser: string;
   stompClient : CompatClient;
@@ -35,13 +36,19 @@ export class ChatViewComponent implements OnInit, AfterViewChecked  {
   }
 
   ngOnInit() {
-    this.userService.getCurrentUser().subscribe(response => {
-        this.currentUser = response.body.login;
-    },() => {}, () => this.connect())
+    this.fetchUserData();
     this.scrollToBottom();
-    this.friendsIntegrationService.getFriends().subscribe(response => {
-      this.userList = response.body;
-    })
+    this.fetchFriendList();
+  }
+
+  ngAfterViewChecked() {        
+    this.scrollToBottom();     
+  } 
+
+  scrollToBottom(): void {
+    try {
+        this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch(err) { }                 
   }
 
   colourConversation(index : number): string {
@@ -55,60 +62,57 @@ export class ChatViewComponent implements OnInit, AfterViewChecked  {
   }
 
 connect() {
-const socket = new SockJS('http://localhost:8080/websocket/yol');
-this.stompClient = Stomp.over(socket);
-const _this = this;
-this.stompClient.connect({ username : this.currentUser}, function (frame) {
-  _this.setConnected(true);
-  _this.stompClient.subscribe('/users/topic/messages', function (hello) {
+  const socket = new SockJS('http://localhost:8080/websocket/yol');
+  this.stompClient = Stomp.over(socket);
+  const _this = this;
+  this.stompClient.connect({ username : this.currentUser}, function (frame) {
+    _this.stompClient.subscribe('/users/topic/messages', function (hello) {
     _this.showConversation(JSON.parse(hello.body));
+    });
   });
-});
+}
+
+showConversation(message : any) {
+  if(message.conversationId === this.conversation.id){
+    this.conversation.messages.push(message);
+  } 
 }
 
 disconnect() {
   if (this.stompClient != null) {
     this.stompClient.disconnect();
   } 
-  this.setConnected(false);
-  console.log('Disconnected!');
 }
 
-setConnected(connected: boolean) {
-if (connected) {
-  console.log('witaj');
-}
-
-}
-showConversation(message : any) {
-  if(message.conversationId === this.conversation.id){
-    this.conversation.messages.push(message);
-  } else {
-    
-  }
-}
 
 sendMessage(content : any){
   this.prepareMessageToSend(content.target.value);
-  this.stompClient.send("/hello", {'Authorization':'Bearer'}, JSON.stringify(this.messageRequest));
+  this.stompClient.send("/message-broker", {'Authorization':'Bearer'}, JSON.stringify(this.messageRequest));
   content.target.value = '';
 }
 
-prepareMessageToSend(content : string){
+prepareMessageToSend(content : string){ 
   this.messageRequest.content = content;
   this.messageRequest.conversationId = this.conversation.id;
   this.messageRequest.author = this.currentUser;
-
 }
 
-ngAfterViewChecked() {        
-  this.scrollToBottom();     
-} 
 
-scrollToBottom(): void {
-  try {
-      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-  } catch(err) { }                 
-}
+fetchFriendList() : void {
+ this.friendsIntegrationService.getFriends().subscribe(response => {
+  this.userList = response.body;
+  });
+ }
+
+fetchUserData() : void { 
+  this.userService.getCurrentUser().subscribe(response => {
+    this.currentUser = response.body.login;
+  },() => {}, () => this.connect());
+ }
+
+ sendFile(file ?: File) : void {
+  debugger;
+    this.friendsIntegrationService.sendFile(file, this.conversation.id).subscribe();
+ }
 
 }

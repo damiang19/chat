@@ -58,7 +58,7 @@ public class FriendsIntegrationController {
 
     @GetMapping(value = "/friend/conversation")
     public ResponseEntity<ConversationDTO> getConversation(@RequestParam String friendLogin) {
-        ConversationDTO conversationDTO = conversationService.getConversation(friendLogin);
+        ConversationDTO conversationDTO = conversationService.getConversationByUsername(friendLogin);
         return ResponseEntity.ok().body(conversationDTO);
     }
 
@@ -69,8 +69,4 @@ public class FriendsIntegrationController {
         return ResponseEntity.ok().body(userDTOList);
     }
 
-//    @PutMapping(value = "/update-readed-messages")
-//    public ResponseEntity<Void> updateReadedMessages(List<MessagesDTO> unreadedMessages){
-//
-//    }
 }
