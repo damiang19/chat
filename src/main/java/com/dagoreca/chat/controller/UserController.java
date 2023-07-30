@@ -1,12 +1,10 @@
 package com.dagoreca.chat.controller;
 
 import com.dagoreca.chat.domain.User;
-import com.dagoreca.chat.service.ConversationService;
 import com.dagoreca.chat.service.UserService;
 import com.dagoreca.chat.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +16,10 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final MongoTemplate mongoTemplate;
-    private final ConversationService conversationService;
-    private Logger logger = LoggerFactory.getLogger(UserService.class);
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    public UserController(UserService userService, ConversationService conversationService, MongoTemplate mongoTemplate) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.conversationService = conversationService;
-        this.mongoTemplate = mongoTemplate;
     }
 
     @PostMapping(value = "/register")

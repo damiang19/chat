@@ -17,6 +17,8 @@ public class MessagesDTO {
 
     private List<String> whoReadTheMessage;
 
+    private MessageFileDTO messageFile;
+
     public MessagesDTO(){
 
     }
@@ -62,17 +64,25 @@ public class MessagesDTO {
         this.whoReadTheMessage = whoReadTheMessage;
     }
 
+    public MessageFileDTO getMessageFile() {
+        return messageFile;
+    }
+
+    public void setMessageFile(MessageFileDTO messageFile) {
+        this.messageFile = messageFile;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MessagesDTO that = (MessagesDTO) o;
-        return Objects.equals(content, that.content) && Objects.equals(sendDate, that.sendDate) && Objects.equals(dateOfReading, that.dateOfReading) && Objects.equals(author, that.author);
+        return Objects.equals(content, that.content) && Objects.equals(sendDate, that.sendDate) && Objects.equals(dateOfReading, that.dateOfReading) && Objects.equals(author, that.author) && Objects.equals(whoReadTheMessage, that.whoReadTheMessage) && Objects.equals(messageFile, that.messageFile);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(content, sendDate, dateOfReading, author);
+        return Objects.hash(content, sendDate, dateOfReading, author, whoReadTheMessage, messageFile);
     }
 
     @Override
@@ -82,6 +92,8 @@ public class MessagesDTO {
                 ", sendDate=" + sendDate +
                 ", dateOfReading=" + dateOfReading +
                 ", author='" + author + '\'' +
+                ", whoReadTheMessage=" + whoReadTheMessage +
+                ", messageFile=" + messageFile +
                 '}';
     }
 }

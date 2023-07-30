@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse, HttpResponseBase } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
@@ -34,6 +34,15 @@ export class FriendsIntegrationService {
 
     public acceptFriendInvitations(login: string): Observable<HttpResponseBase> {
         return this.httpClient.put(API_URL+'/accept-friend-invitation', {}, {observe:'response',params:{'login': login}})
+    }
+
+    public sendFile(file : File, conversationIdentity : number) : Observable<HttpResponse<any>> {
+        const formdata: FormData = new FormData();  
+        var blob = new Blob([file], { type: "text/xml"});
+        formdata.set('file', blob);  
+        const headers = new HttpHeaders()
+        headers.set('Content-Type','multipart/form-data')
+        return this.httpClient.post<any>(API_URL+'/photos/add', formdata , {params:{'conversationIdentity': String(conversationIdentity)} })
     }
 
 

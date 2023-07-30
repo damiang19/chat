@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class FriendsIntegrationServiceImpl implements FriendsIntegrationService {
 
-    private Logger logger = LoggerFactory.getLogger(FriendsIntegrationService.class);
+    private final Logger logger = LoggerFactory.getLogger(FriendsIntegrationService.class);
     private final ConversationService conversationService;
     private final MongoTemplate mongoTemplate;
     private final UserService userService;
