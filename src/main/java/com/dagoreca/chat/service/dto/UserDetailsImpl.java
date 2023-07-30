@@ -1,6 +1,7 @@
 package com.dagoreca.chat.service.dto;
 
 import com.dagoreca.chat.domain.User;
+import com.dagoreca.chat.domain.enums.Roles;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +18,8 @@ public class UserDetailsImpl implements UserDetails {
 
 	private final String username;
 
-
 	private final String password;
+
 
 	private Collection<? extends GrantedAuthority> authorities;
 
@@ -30,7 +31,7 @@ public class UserDetailsImpl implements UserDetails {
 	}
 
 	public static UserDetailsImpl build(User user) {
-		List authorities = user.getRoles().stream()
+		List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
 				.map(role -> new SimpleGrantedAuthority(role.getValue()))
 				.collect(Collectors.toList());
 
@@ -80,6 +81,8 @@ public class UserDetailsImpl implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
+
+
 
 	@Override
 	public boolean equals(Object o) {
