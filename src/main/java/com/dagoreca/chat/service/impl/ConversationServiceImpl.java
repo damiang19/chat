@@ -8,7 +8,6 @@ import com.dagoreca.chat.service.UserService;
 import com.dagoreca.chat.service.dto.ConversationDTO;
 import com.dagoreca.chat.service.dto.MessageRequestDTO;
 import com.dagoreca.chat.service.dto.MessagesDTO;
-import com.dagoreca.chat.service.dto.UserDTO;
 import com.dagoreca.chat.service.mapper.ConversationMapper;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -28,7 +27,7 @@ public class ConversationServiceImpl implements ConversationService {
     private final UserService userService;
     private final MongoTemplate mongoTemplate;
 
-    private ConversationMapper conversationMapper;
+    private final ConversationMapper conversationMapper;
 
     private final ConversationRepository conversationRepository;
 

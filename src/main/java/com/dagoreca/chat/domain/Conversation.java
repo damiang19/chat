@@ -1,6 +1,5 @@
 package com.dagoreca.chat.domain;
 
-import com.dagoreca.chat.service.dto.ConversationDTO;
 import com.dagoreca.chat.service.dto.MessagesDTO;
 import org.springframework.data.mongodb.core.mapping.Document;
 

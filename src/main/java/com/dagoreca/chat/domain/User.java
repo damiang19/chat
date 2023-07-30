@@ -1,7 +1,6 @@
 package com.dagoreca.chat.domain;
 
 import com.dagoreca.chat.domain.enums.Roles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -12,9 +12,9 @@ public class JmsMessagingService {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendMessage(){
+    public void sendMessage() {
         MessagesDTO content = new MessagesDTO();
         content.setContent("fifi");
-        rabbitTemplate.convertAndSend("","messages.queue", "content");
+        rabbitTemplate.convertAndSend("", "messages.queue", "content");
     }
 }

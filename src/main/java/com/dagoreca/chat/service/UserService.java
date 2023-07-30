@@ -5,7 +5,6 @@ import com.dagoreca.chat.domain.User;
 import com.dagoreca.chat.service.dto.UserDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
 

@@ -1,6 +1,5 @@
 package com.dagoreca.chat.service.dto;
 
-
 import com.dagoreca.chat.domain.enums.Roles;
 import java.io.Serializable;
 import java.util.*;

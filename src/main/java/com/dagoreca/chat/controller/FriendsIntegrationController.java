@@ -5,7 +5,6 @@ import com.dagoreca.chat.service.ConversationService;
 import com.dagoreca.chat.service.FriendsIntegrationService;
 import com.dagoreca.chat.service.UserService;
 import com.dagoreca.chat.service.dto.ConversationDTO;
-import com.dagoreca.chat.service.dto.MessagesDTO;
 import com.dagoreca.chat.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,7 @@ public class FriendsIntegrationController {
     private final UserService userService;
     private final ConversationService conversationService;
     private final FriendsIntegrationService friendsIntegrationService;
-    private Logger logger = LoggerFactory.getLogger(FriendsIntegrationController.class);
+    private final Logger logger = LoggerFactory.getLogger(FriendsIntegrationController.class);
 
     public FriendsIntegrationController(UserService userService, ConversationService conversationService, FriendsIntegrationService friendsIntegrationService) {
         this.userService = userService;

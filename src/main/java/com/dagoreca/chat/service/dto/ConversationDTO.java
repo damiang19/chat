@@ -1,7 +1,5 @@
 package com.dagoreca.chat.service.dto;
 
-
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
