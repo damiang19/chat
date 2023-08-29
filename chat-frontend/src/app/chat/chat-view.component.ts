@@ -7,6 +7,7 @@ import { User } from '../models/user';
 import { Conversation } from '../models/conversation';
 import { MessageRequest } from '../models/message-request';
 import { FriendsIntegrationService } from '../services/friends-integration.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'chat-view',
@@ -25,7 +26,7 @@ export class ChatViewComponent implements OnInit, AfterViewChecked  {
   userList : User[];
   messageRequest: MessageRequest;
   
-  constructor( private ws : WebSocketService,private userService : UserService, private friendsIntegrationService : FriendsIntegrationService) { 
+  constructor( private ws : WebSocketService,private userService : UserService, private friendsIntegrationService : FriendsIntegrationService, private sanitizer : DomSanitizer) { 
     this.message = '';
     this.userList = [];
     this.currentUser = '';
@@ -73,6 +74,7 @@ connect() {
 }
 
 showConversation(message : any) {
+  this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,', )
   if(message.conversationId === this.conversation.id){
     this.conversation.messages.push(message);
   } 
@@ -111,7 +113,8 @@ fetchUserData() : void {
  }
 
  sendFile(file ?: File) : void {
-  debugger;
+    console.log(file);
+    
     this.friendsIntegrationService.sendFile(file, this.conversation.id).subscribe();
  }
 

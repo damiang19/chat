@@ -1,17 +1,15 @@
 package com.dagoreca.chat.service.impl;
 
 
+import com.dagoreca.chat.controller.error.BaseException;
 import com.dagoreca.chat.domain.Conversation;
 import com.dagoreca.chat.repository.ConversationRepository;
 import com.dagoreca.chat.service.ConversationService;
 import com.dagoreca.chat.service.UserService;
 import com.dagoreca.chat.service.dto.ConversationDTO;
-import com.dagoreca.chat.service.dto.MessageFileDTO;
 import com.dagoreca.chat.service.dto.MessageRequestDTO;
 import com.dagoreca.chat.service.dto.MessagesDTO;
 import com.dagoreca.chat.service.mapper.ConversationMapper;
-import org.bson.BsonBinarySubType;
-import org.bson.types.Binary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -19,12 +17,12 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -56,6 +54,7 @@ public class ConversationServiceImpl implements ConversationService {
         Query query = getActualConversationQuery(friendLogin, currentUser);
         return conversationMapper.toDto(mongoTemplate.findOne(query, Conversation.class));
     }
+
     private Query getActualConversationQuery(String friendLogin, String currentUserLogin) {
         Query query = new Query();
         Criteria criteria = new Criteria();
@@ -65,11 +64,22 @@ public class ConversationServiceImpl implements ConversationService {
     }
 
     @Override
+    public ConversationDTO getConversationById(Long conversationId) {
+        logger.debug("Request to get conversation with id : {}", conversationId);
+        Optional<Conversation> optionalConversationDTO = conversationRepository.findById(conversationId);
+        if (optionalConversationDTO.isPresent()) {
+            return conversationMapper.toDto(optionalConversationDTO.get());
+        } else throw new BaseException("Conversation does not exist");
+    }
+
+
+    @Override
     public ConversationDTO getActualConversation(MessageRequestDTO messageRequestDTO) {
         logger.debug("Request to get actual conversation");
         return conversationMapper.toDto(conversationRepository
                 .findById(messageRequestDTO.getConversationId()).orElseThrow(RuntimeException::new));
     }
+
     @Override
     public ConversationDTO save(ConversationDTO conversationDTO) {
         logger.debug("Request to save conversation : {}", conversationDTO);
@@ -102,7 +112,7 @@ public class ConversationServiceImpl implements ConversationService {
         return save(actualConversation);
     }
 
-    private void updateMessageRequest(MessageRequestDTO messageRequestDTO, Instant actualDate, ConversationDTO conversation){
+    private void updateMessageRequest(MessageRequestDTO messageRequestDTO, Instant actualDate, ConversationDTO conversation) {
         messageRequestDTO.setSendDate(actualDate);
         messageRequestDTO.setReceivers(conversation.getConversationMembers());
     }
@@ -113,24 +123,6 @@ public class ConversationServiceImpl implements ConversationService {
         messagesDTO.setContent(messageRequestDTO.getContent());
         messagesDTO.setAuthor(messageRequestDTO.getAuthor());
         return messagesDTO;
-    }
-
-
-    // TODO : file handling
-    public void createMessageWithFile(MultipartFile multipartFile, Long conversationId) {
-        addFile(multipartFile);
-    }
-
-
-    public MessageFileDTO addFile(MultipartFile file) {
-        MessageFileDTO messageFileDTO = new MessageFileDTO();
-        messageFileDTO.setTitle(file.getName());
-        try {
-            messageFileDTO.setContent(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
-        } catch (IOException exception) {
-            System.out.println(exception.getMessage());
-        }
-        return messageFileDTO;
     }
 
 }

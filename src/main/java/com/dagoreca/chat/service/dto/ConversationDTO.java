@@ -1,14 +1,11 @@
 package com.dagoreca.chat.service.dto;
 
-
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class ConversationDTO implements Serializable {
-
     private Long id ;
     private String conversationName;
     private List<String> conversationMembers;

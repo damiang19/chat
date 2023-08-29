@@ -31,7 +31,6 @@ export class RegistrationComponent implements OnInit {
       ()=> this.router.navigate(['/']),
       error => {
         const formControl = this.registrationForm.get('login');
-        console.log(error)
         formControl.setErrors({internalServerError : error.error.message})
     });
   }

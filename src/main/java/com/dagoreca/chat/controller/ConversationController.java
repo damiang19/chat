@@ -1,6 +1,8 @@
 package com.dagoreca.chat.controller;
 
 import com.dagoreca.chat.service.ConversationService;
+import com.dagoreca.chat.service.FileService;
+import com.dagoreca.chat.service.dto.ConversationDTO;
 import com.dagoreca.chat.service.dto.MessageFileDTO;
 import com.dagoreca.chat.service.dto.MessageRequestDTO;
 import org.bson.BsonBinarySubType;
@@ -25,31 +27,31 @@ import java.util.stream.Collectors;
 public class ConversationController {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final ConversationService conversationService;
-
     private final SimpUserRegistry simpUserRegistry;
+    private final FileService fileService;
 
 
-    public ConversationController(SimpMessagingTemplate simpMessagingTemplate, ConversationService conversationService, SimpUserRegistry simpUserRegistry) {
+    public ConversationController(SimpMessagingTemplate simpMessagingTemplate, ConversationService conversationService, SimpUserRegistry simpUserRegistry, FileService fileService) {
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.conversationService = conversationService;
         this.simpUserRegistry = simpUserRegistry;
+        this.fileService = fileService;
     }
 
     @MessageMapping("/message-broker")
     public void send(SimpMessageHeaderAccessor sha, @Payload MessageRequestDTO messageRequestDTO) {
         messageRequestDTO = conversationService.handleMessage(messageRequestDTO);
-        for(String userLogin : messageRequestDTO.getReceivers()){
+        for (String userLogin : messageRequestDTO.getReceivers()) {
             simpMessagingTemplate.convertAndSendToUser(userLogin, "/topic/messages", messageRequestDTO);
         }
     }
 
     @PostMapping("/photos/add")
-    public String addPhoto(@RequestParam("file") MultipartFile file, @RequestParam String conversationIdentity) throws IOException {
-        MessageRequestDTO messageRequestDTO = new MessageRequestDTO();
-        MessageFileDTO messageFileDTO = new MessageFileDTO();
-        messageFileDTO.setTitle(file.getName());
-        messageFileDTO.setContent(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
-
+    public String addPhoto(@RequestParam("file") MultipartFile file, @RequestParam Long conversationIdentity) throws IOException {
+        MessageFileDTO messageFileDTO = fileService.addFile(file);
+        ConversationDTO conversationDTO = conversationService.getConversationById(conversationIdentity);
+        conversationDTO.getMessages().get(conversationDTO.getMessages().size() - 1).setMessageFile(messageFileDTO);
+        conversationService.save(conversationDTO);
         return null;
     }
 

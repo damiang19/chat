@@ -2,7 +2,6 @@ package com.dagoreca.chat.service;
 
 import com.dagoreca.chat.service.dto.ConversationDTO;
 import com.dagoreca.chat.service.dto.MessageRequestDTO;
-import com.dagoreca.chat.service.dto.MessagesDTO;
 
 import java.util.List;
 
@@ -12,6 +11,8 @@ public interface ConversationService {
     MessageRequestDTO handleMessage(MessageRequestDTO messageRequestDTO);
 
     ConversationDTO getConversationByUsername(String login);
+
+    ConversationDTO getConversationById(Long conversationId);
 
     ConversationDTO getActualConversation(MessageRequestDTO messageRequestDTO);
 

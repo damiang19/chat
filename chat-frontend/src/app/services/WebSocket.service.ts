@@ -14,7 +14,6 @@ export class WebSocketService {
     this.stompClient = Stomp.over(socket);
     const _this = this;
     this.stompClient.connect({username: 'admin'}, function (frame) {
-      debugger;
       _this.setConnected(true);
       _this.stompClient.subscribe('users/topic/messages', function (hello) {
         _this.showGreeting(JSON.parse(hello.body));
@@ -26,7 +25,6 @@ export class WebSocketService {
     if (this.stompClient != null) {
       this.stompClient.disconnect();
     }
-
     this.setConnected(false);
     console.log('Disconnected!');
   }

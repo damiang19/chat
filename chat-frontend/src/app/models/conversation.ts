@@ -5,6 +5,7 @@ export interface IConversation {
     messages: Messages[];
     conversationMembers: string[];
     isGroupConversation: boolean;
+    messageFile: File;
     }
 
 export class Conversation implements IConversation {
@@ -12,5 +13,6 @@ export class Conversation implements IConversation {
     public messages: Messages[];
     public conversationMembers: string[];
     public isGroupConversation: boolean;
+    public messageFile: File;
     public constructor(){};
 }
