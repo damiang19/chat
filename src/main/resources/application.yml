@@ -1,7 +1,7 @@
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: default
   servlet:
     multipart:
       max-file-size: 256MB
