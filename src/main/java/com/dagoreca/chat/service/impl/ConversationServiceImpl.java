@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +53,10 @@ public class ConversationServiceImpl implements ConversationService {
     public ConversationDTO getConversationByUsername(String friendLogin) {
         String currentUser = userService.getCurrentUser().getLogin();
         Query query = getActualConversationQuery(friendLogin, currentUser);
-        return conversationMapper.toDto(mongoTemplate.findOne(query, Conversation.class));
+        Conversation conversation = mongoTemplate.findOne(query, Conversation.class);
+        int messagesSize = conversation.getMessages().size() - 1;
+        conversation.getMessages().get(messagesSize).setEncodedFile(Base64.getEncoder().encodeToString(conversation.getMessages().get(messagesSize).getMessageFile().getContent().getData()));;
+        return conversationMapper.toDto(conversation);
     }
 
     private Query getActualConversationQuery(String friendLogin, String currentUserLogin) {

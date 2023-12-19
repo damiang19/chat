@@ -19,6 +19,8 @@ public class MessagesDTO {
 
     private MessageFileDTO messageFile;
 
+    private String encodedFile;
+
     public MessagesDTO(){
 
     }
@@ -72,17 +74,25 @@ public class MessagesDTO {
         this.messageFile = messageFile;
     }
 
+    public String getEncodedFile() {
+        return encodedFile;
+    }
+
+    public void setEncodedFile(String encodedFile) {
+        this.encodedFile = encodedFile;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MessagesDTO that = (MessagesDTO) o;
-        return Objects.equals(content, that.content) && Objects.equals(sendDate, that.sendDate) && Objects.equals(dateOfReading, that.dateOfReading) && Objects.equals(author, that.author) && Objects.equals(whoReadTheMessage, that.whoReadTheMessage) && Objects.equals(messageFile, that.messageFile);
+        return Objects.equals(content, that.content) && Objects.equals(sendDate, that.sendDate) && Objects.equals(dateOfReading, that.dateOfReading) && Objects.equals(author, that.author) && Objects.equals(whoReadTheMessage, that.whoReadTheMessage) && Objects.equals(messageFile, that.messageFile) && Objects.equals(encodedFile, that.encodedFile);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(content, sendDate, dateOfReading, author, whoReadTheMessage, messageFile);
+        return Objects.hash(content, sendDate, dateOfReading, author, whoReadTheMessage, messageFile, encodedFile);
     }
 
     @Override
@@ -94,6 +104,7 @@ public class MessagesDTO {
                 ", author='" + author + '\'' +
                 ", whoReadTheMessage=" + whoReadTheMessage +
                 ", messageFile=" + messageFile +
+                ", encodedFile='" + encodedFile + '\'' +
                 '}';
     }
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,7 @@ public class ConversationController {
         MessageFileDTO messageFileDTO = fileService.addFile(file);
         ConversationDTO conversationDTO = conversationService.getConversationById(conversationIdentity);
         conversationDTO.getMessages().get(conversationDTO.getMessages().size() - 1).setMessageFile(messageFileDTO);
+        String d = Base64.getEncoder().encodeToString(conversationDTO.getMessages().get(conversationDTO.getMessages().size() - 1).getMessageFile().getContent().getData());
         conversationService.save(conversationDTO);
         return null;
     }

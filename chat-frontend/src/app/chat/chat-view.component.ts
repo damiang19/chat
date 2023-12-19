@@ -25,6 +25,7 @@ export class ChatViewComponent implements OnInit, AfterViewChecked  {
   conversation: Conversation;
   userList : User[];
   messageRequest: MessageRequest;
+  imagePath: any;
   
   constructor( private ws : WebSocketService,private userService : UserService, private friendsIntegrationService : FriendsIntegrationService, private sanitizer : DomSanitizer) { 
     this.message = '';
@@ -59,7 +60,12 @@ export class ChatViewComponent implements OnInit, AfterViewChecked  {
   openConversation(friendLogin : string): void {
     this.friendsIntegrationService.getConversation(friendLogin).subscribe(response =>{
       this.conversation = response.body;
-    })
+    }, err => {}, 
+    () =>  {
+      this.imagePath = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' 
+    + this.conversation.messages[15].encodedFile)
+    console.log(this.imagePath)
+    });
   }
 
 connect() {
